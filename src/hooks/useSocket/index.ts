@@ -11,8 +11,8 @@ export type EventsMap = {
 type Props = Parameters<typeof io>
 
 /**
- * 根据指定参数取得一个webSocket套接字
- * 使用socket.io-client
+ * 根据指定参数取得一个webSocket套接字  
+ * 使用socket.io-client  
  * @returns socket对象
  */
 export default function useSocket<T extends EventsMap = {}>(...args: Props) {
