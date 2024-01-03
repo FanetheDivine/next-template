@@ -5,8 +5,8 @@ import pic from './module/images/example.png'
 import styles from './module/styles.module.scss'
 // 必须命名为xxx.module.xxx
 import upload from './module/server-action/upload'
-import checkEmail from './module/server-action/checkForm'
-import { FormField } from './module/server-action/checkForm/form'
+import checkEmail from './module/server-action/login'
+import { LoginField } from './module/server-action/login/loginField'
 // 常量不能和server action定义在一个文件里
 import { Button, Form, Input, message } from 'antd'
 import { useForm } from 'antd/es/form/Form'
