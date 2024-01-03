@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import favicon from './module/images/favicon.ico'
 
 export const metadata: Metadata = {
   title: 'next项目模板',
   description: 'next项目模板',
+  icons:favicon.src
 }
 type Props={
   children:React.ReactNode
