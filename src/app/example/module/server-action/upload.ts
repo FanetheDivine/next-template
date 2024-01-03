@@ -3,7 +3,8 @@
 import { File } from "buffer"
 
 export default async function upload(formData: FormData) {
-    const [fileName, file] = [...formData.entries()][0]
+    const [encodedFileName, file] = [...formData.entries()][0]
+    const fileName = decodeURIComponent(encodedFileName)
     if (file instanceof File) {
         return fileName
     }

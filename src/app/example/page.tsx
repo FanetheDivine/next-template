@@ -3,31 +3,36 @@
 import Image from 'next/image'
 import pic from './module/images/example.png'
 import styles from './module/styles.module.scss'
-// 必须命名为xxx.module.xxx
 import upload from './module/server-action/upload'
-import checkEmail from './module/server-action/login'
+import login from './module/server-action/login'
 import { LoginField } from './module/server-action/login/loginField'
-// 常量不能和server action定义在一个文件里
 import { Button, Form, Input, message } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import Password from 'antd/es/input/Password'
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { ZodError } from 'zod'
 
-const FormItem = Form.Item<FormField>
+const FormItem = Form.Item<LoginField>
 
 export default function Home() {
-  const [form] = useForm<FormField>()
+  const [form] = useForm<LoginField>()
   const router = useRouter()
   const pathname = usePathname()
   async function Login() {
-    router.push(`${pathname}/logged`)
-    // const formValues = form.getFieldsValue()
-    // try {
-    //   const val = await checkEmail(FormField.parse(formValues))
-    //   console.log(val)
-    // } catch (e) {
-    //   console.log(e)
-    // }
+    try {
+      const formValues = form.getFieldsValue()
+      await login(LoginField.parse(formValues))
+      message.success('登录成功')
+      router.push(`${pathname}/subPage`)
+    } catch (e) {
+      if (e instanceof ZodError) {
+        message.error('表单错误')
+      } else if (e instanceof Error) {
+        message.error(e.message)
+      } else {
+        message.error('登录失败')
+      }
+    }
   }
 
   return (
@@ -42,8 +47,17 @@ export default function Home() {
           const file = e.target.files?.[0]
           if (file) {
             const formData = new FormData()
-            formData.set(encodeURI(file.name), file)// 编码中文文件名
-            upload(formData).catch(e => message.error(e.message ?? '上传失败'))
+            formData.set(encodeURIComponent(file.name), file)//必须传递文件名 file.name会乱码
+            try {
+              const fileName = await upload(formData)
+              message.success(`上传成功,文件名为${fileName}`)
+            } catch (e) {
+              if (e instanceof Error) {
+                message.error(e.message)
+              } else {
+                message.error('上传失败')
+              }
+            }
           }
         }}></input>
         <Form form={form}>

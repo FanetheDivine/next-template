@@ -34,7 +34,7 @@ example
 │   │       └─ loginField.ts 定义zod对象和传输数据类型
 │   ├── component/ 组件
 │   ├── images/ 图片
-│   ├── styles.module.scss 样式
+│   ├── styles.module.scss 样式sass文件(命名不能更改)
 │   └── 其他资源
 └── page.tsx 页面
 ```
