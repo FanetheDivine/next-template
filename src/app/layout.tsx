@@ -10,7 +10,6 @@ type Props={
 }
 
 export default function RootLayout(props:Props) {
-  console.log(1)
   return (
     <html lang="zh-CN">
       <body>{props.children}</body>
