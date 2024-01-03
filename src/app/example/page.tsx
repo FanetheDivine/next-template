@@ -36,8 +36,6 @@ export default function Home() {
       <span className={styles.example} style={{ width: pic.width, height: pic.height }}></span>
       {/* 导入图片后在next/Image使用 */}
       <Image alt='' src={pic}></Image>
-      {/* 自定义路由 */}
-      <Image alt='' src={'/example/pic'} width={pic.width} height={pic.height}></Image>
       <div>
         {/* 通过server action上传文件 */}
         <input type='file' onChange={async e => {
