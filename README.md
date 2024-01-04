@@ -6,7 +6,6 @@
 ## 工具库
 * 样式 `sass`
 * 组件库 `antd`
-* 网络请求 `axios`
 * 对象持久化 `immutable`
 * 日期时间 `moment`
 * 校验数据格式 `zod`
@@ -43,5 +42,5 @@ example
 * 客户端全局状态管理使用需自行创建钩子并引用`useSWR`进行
 * 客户端组件获取浏览器url信息通过`next/navigation`的钩子进行
 * `layout.tsx`是服务端组件且不获取路径参数和查询参数。如果有需求,创建一个客户端组件完成这个功能
-* 使用`server-action`而不是`route.ts`。在与`server-action`不同的文件中通过zod定义请求体类型,在客户端和服务端双端校验。从`@/type/ZodObjType`获取数据类型。
+* 尽可能使用`server-action`而不是`route.ts`。在与`server-action`不同的文件中通过zod定义请求体类型,在客户端和服务端双端校验。从`@/type/ZodObjType`获取数据类型。
 * 尽可能下降持有状态的组件的层级。例如展示数据时表格应该根据分页自行持有状态,而不是由父组件持有
