@@ -38,8 +38,36 @@ example
 └── page.tsx 页面
 ```
 ### 组件规范
-* 客户端组件不能直接引用服务端组件,但可以将服务端组件作为其他组件的`children`或者作为页面使用
+* 客户端组件不能直接引用服务端组件,反过来可以。如果有需要,创建客户端组件并以服务端组件作为参数(children或者其他)。
+  #### page.tsx  
+  ```ts
+  import ClientComponent from './module/component/ClientComponent'
+
+  export default function Page(){
+    return <ClientComponent>{new Date().getTime()}</ClientComponent>
+  }
+  ```
+  #### module/component/ClientComponent.tsx
+  ```ts
+  'use client'
+
+  import { ReactNode, useState } from 'react'
+
+  type Props = {
+    children: ReactNode
+  }
+
+  export default function ClientComponent(props:Props){
+    const [num, setNum] = sueState(0)
+    return (
+        <>
+            <button onClick={()=>setNum(num+1)}>{num}</button>
+            {props.children}
+        </>
+    )
+  }
+  ```
 * 客户端管理多个组件共享的状态时,需引用`useSWR`自行创建钩子,并使用当前目录+数据名作为key,确保唯一性
 * 客户端组件获取浏览器url信息通过`next/navigation`的钩子进行
 * 尽可能使用`server-action`而不是`route.ts`。在与`server-action`不同的文件中通过zod定义请求体类型,在客户端和服务端双端校验。从`@/type/ZodObjType`获取数据类型。
-* 尽可能下降持有状态的组件的层级。例如展示数据时表格应该根据分页自行持有状态,而不是由父组件持有
+* 客户端组件中,抽取状态和依赖此状态的组件至新组件,尽可能下沉状态的层级。如果新组件需要子组件,通过传参解决。参考第一条。
