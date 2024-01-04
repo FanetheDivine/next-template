@@ -2,13 +2,13 @@
 
 import { useRouter } from 'next/navigation'
 import { Button } from 'antd'
-import styles from './module/styles.module.scss'
+import { fullBox, positionCenter, } from '@/styles'
 
 export default function Home() {
   const router = useRouter()
   return (
-    <main className={styles.main}>
-      <Button type={'primary'} onClick={() => router.push('/example')}>example</Button>
+    <main className={fullBox}>
+      <Button className={[positionCenter,'text-black'].join(' ')} type={'primary'} onClick={() => router.push('/example')}>example</Button>
     </main>
   )
 }

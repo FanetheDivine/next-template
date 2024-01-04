@@ -4,7 +4,7 @@
 ## 框架
 `Next.js 14`
 ## 工具库
-* 样式 `sass`
+* 样式 `tailwindcss`
 * 组件库 `antd`
 * 对象持久化 `immutable`
 * 日期时间 `moment`
@@ -33,7 +33,8 @@ example
 │   │       └─ loginField.ts 定义zod对象和传输数据类型
 │   ├── component/ 组件
 │   ├── images/ 图片
-│   ├── styles.module.scss 样式sass文件(命名不能更改)
+│   ├── styles.ts tailwindcss样式文件
+│   ├── types.ts 类型文件
 │   └── 其他资源
 └── page.tsx 页面
 ```

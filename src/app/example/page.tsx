@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import pic from './module/images/example.png'
-import styles from './module/styles.module.scss'
 import upload from './module/server-action/upload'
 import login from './module/server-action/login'
 import { LoginField } from './module/server-action/login/loginField'
@@ -11,6 +10,7 @@ import { useForm } from 'antd/es/form/Form'
 import Password from 'antd/es/input/Password'
 import { usePathname, useRouter } from 'next/navigation'
 import { ZodError } from 'zod'
+import { fullBox } from '@/styles'
 
 const FormItem = Form.Item<LoginField>
 
@@ -36,13 +36,9 @@ export default function Home() {
   }
 
   return (
-    <div>
-      {/* 在样式中引用图片 */}
-      <span className={styles.example} style={{ width: pic.width, height: pic.height }}></span>
-      {/* 导入图片后在next/Image使用 */}
+    <div className={fullBox}>
       <Image alt='' src={pic}></Image>
       <div>
-        {/* 通过server action上传文件 */}
         <input type='file' onChange={async e => {
           const file = e.target.files?.[0]
           if (file) {
@@ -60,7 +56,7 @@ export default function Home() {
             }
           }
         }}></input>
-        <Form form={form}>
+        <Form className='w-1/2' form={form}>
           <FormItem name='email'><Input placeholder='邮箱'></Input></FormItem>
           <FormItem name='password'><Password></Password></FormItem>
           <FormItem><Button onClick={Login}>登录</Button></FormItem>
