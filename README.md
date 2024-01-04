@@ -17,7 +17,7 @@
 ### 后缀名
 使用`JSX`的文件后缀名为`tsx`
 ### 路径简写
-* `'src/'`简写为`'@/' `
+* `'src/'`简写为`'@/' `,`@/`下`app`目录为页面路径,其余为公共资源
 ### 路由
 采用App Router规范
 ### 项目结构规范
@@ -25,17 +25,14 @@
 ```
 example
 ├── subPage/ 下级路由
-├── globals.css 全局css
-├── layout.tsx 布局
 ├── module 本级路由资源
 │   ├── server-action 服务端指令
 │   │   └── login 登录(server action)
 │   │       └─ loginField.ts 定义zod对象和传输数据类型
 │   ├── component/ 组件
 │   ├── images/ 图片
-│   ├── styles.ts tailwindcss样式文件
-│   ├── types.ts 类型文件
 │   └── 其他资源
+├── layout.tsx 布局
 └── page.tsx 页面
 ```
 ### 组件规范
