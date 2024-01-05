@@ -11,6 +11,7 @@ import Password from 'antd/es/input/Password'
 import { usePathname, useRouter } from 'next/navigation'
 import { ZodError } from 'zod'
 import { fullBox } from '@/styles'
+import { LoginOutlined } from '@ant-design/icons'
 
 const FormItem = Form.Item<LoginField>
 
@@ -59,7 +60,7 @@ export default function Home() {
         <Form className='w-1/2' form={form}>
           <FormItem name='email'><Input placeholder='邮箱'></Input></FormItem>
           <FormItem name='password'><Password></Password></FormItem>
-          <FormItem><Button onClick={Login}>登录</Button></FormItem>
+          <FormItem><Button onClick={Login}><LoginOutlined />登录</Button></FormItem>
         </Form>
       </div>
     </div>
