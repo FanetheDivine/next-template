@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { fullBox } from '@/styles'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
 import favicon from '@/favicon.ico'
 import '@/globals.css'
 
@@ -15,7 +16,9 @@ type Props = {
 export default function RootLayout(props: Props) {
   return (
     <html lang="zh-CN" className={fullBox}>
-      <body className={fullBox}>{props.children}</body>
+      <body className={fullBox}>
+        <AntdRegistry>{props.children}</AntdRegistry>
+      </body>
     </html>
   )
 }
