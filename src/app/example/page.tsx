@@ -10,6 +10,7 @@ import Password from 'antd/es/input/Password'
 import { usePathname, useRouter } from 'next/navigation'
 import { LoginOutlined, UndoOutlined, UploadOutlined } from '@ant-design/icons'
 import { getZodForm } from '@/components/Form'
+import { fullBox, positionCenter } from '@/styles'
 
 const [Form, FormItem] = getZodForm(LoginField)
 export default function Home() {
@@ -31,13 +32,13 @@ export default function Home() {
 	}
 
 	return (
-		<Layout>
+		<Layout className={fullBox}>
 			<FloatButton></FloatButton>
 			<Image alt='' src={pic} onClick={() => modal.info({ title: 1 })}></Image>
 			<Upload accept='image/*' multiple={false}>
 				<Button type='primary' icon={<UploadOutlined></UploadOutlined>}></Button>
 			</Upload>
-			<Card className={['w-1/3'].join(' ')}>
+			<Card className={[positionCenter,'w-1/3'].join(' ')}>
 				<Form onFinish={submit}>
 					<FormItem name='email' label='邮箱'><Input></Input></FormItem>
 					<FormItem name='password' label='密码'><Password></Password></FormItem>

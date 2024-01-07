@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { fullBox } from '@/styles'
 import { AntdContext } from '@/antd-context'
 import favicon from '@/favicon.ico'
 import '@/globals.css'
@@ -15,8 +14,8 @@ type Props = {
 
 export default function RootLayout(props: Props) {
 	return (
-		<html lang="zh-CN" className={fullBox}>
-			<body className={fullBox}>
+		<html lang="zh-CN">
+			<body>
 				<AntdContext>
 					{props.children}
 				</AntdContext>
