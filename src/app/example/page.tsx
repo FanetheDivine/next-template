@@ -5,64 +5,50 @@ import pic from './module/images/example.png'
 import upload from './module/server-action/upload'
 import login from './module/server-action/login'
 import { LoginField } from './module/server-action/login/loginField'
-import { Button, Form, Input, message } from 'antd'
-import { useForm } from 'antd/es/form/Form'
+import { App, Button, Card, FloatButton, Input, Layout, Select, Upload, message } from 'antd'
 import Password from 'antd/es/input/Password'
 import { usePathname, useRouter } from 'next/navigation'
-import { ZodError } from 'zod'
-import { fullBox } from '@/styles'
-import { LoginOutlined } from '@ant-design/icons'
+import { LoginOutlined, UndoOutlined, UploadOutlined } from '@ant-design/icons'
+import { getZodForm } from '@/components/Form'
 
-const FormItem = Form.Item<LoginField>
-
+const [Form, FormItem] = getZodForm(LoginField)
 export default function Home() {
-  const [form] = useForm<LoginField>()
-  const router = useRouter()
-  const pathname = usePathname()
-  async function Login() {
-    try {
-      const formValues = form.getFieldsValue()
-      await login(LoginField.parse(formValues))
-      message.success('登录成功')
-      router.push(`${pathname}/subPage`)
-    } catch (e) {
-      if (e instanceof ZodError) {
-        message.error('表单错误')
-      } else if (e instanceof Error) {
-        message.error(e.message)
-      } else {
-        message.error('登录失败')
-      }
-    }
-  }
+	const router = useRouter()
+	const pathname = usePathname()
+	const { modal } = App.useApp()
+	async function submit(value: LoginField) {
+		try {
+			await login(value)
+			message.success('登录成功')
+			router.push(`${pathname}/subPage`)
+		} catch (e) {
+			if (e instanceof Error) {
+				message.error(e.message)
+			} else {
+				message.error('登录失败')
+			}
+		}
+	}
 
-  return (
-    <div className={fullBox}>
-      <Image alt='' src={pic}></Image>
-      <div>
-        <input type='file' onChange={async e => {
-          const file = e.target.files?.[0]
-          if (file) {
-            const formData = new FormData()
-            formData.set(encodeURIComponent(file.name), file)//必须传递文件名 file.name会乱码
-            try {
-              const fileName = await upload(formData)
-              message.success(`上传成功,文件名为${fileName}`)
-            } catch (e) {
-              if (e instanceof Error) {
-                message.error(e.message)
-              } else {
-                message.error('上传失败')
-              }
-            }
-          }
-        }}></input>
-        <Form className='w-1/2' form={form}>
-          <FormItem name='email'><Input placeholder='邮箱'></Input></FormItem>
-          <FormItem name='password'><Password></Password></FormItem>
-          <FormItem><Button onClick={Login}><LoginOutlined />登录</Button></FormItem>
-        </Form>
-      </div>
-    </div>
-  )
+	return (
+		<Layout>
+			<FloatButton></FloatButton>
+			<Image alt='' src={pic} onClick={() => modal.info({ title: 1 })}></Image>
+			<Upload accept='image/*' multiple={false}>
+				<Button type='primary' icon={<UploadOutlined></UploadOutlined>}></Button>
+			</Upload>
+			<Card className={['w-1/3'].join(' ')}>
+				<Form onFinish={submit}>
+					<FormItem name='email' label='邮箱'><Input></Input></FormItem>
+					<FormItem name='password' label='密码'><Password></Password></FormItem>
+					<FormItem>
+						<span className='flex justify-evenly'>
+							<Button htmlType='submit' type='primary' icon={<LoginOutlined />}>登录</Button>
+							<Button htmlType='reset' type='primary' icon={<UndoOutlined />}>重置</Button>
+						</span>
+					</FormItem>
+				</Form>
+			</Card>
+		</Layout>
+	)
 }

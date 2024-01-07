@@ -12,7 +12,8 @@
 * 客户端状态管理 `swr`
 * 常见工具函数 `lodash`
 * 登录鉴权 `next-auth`
-* 数据库操作 `prisma`
+* 数据库操作 `prisma`  
+**说明**:部署使用npm i --production命令,package.json的dependencies中仅保留需要的包
 ## 项目规范
 ### 后缀名
 使用`JSX`的文件后缀名为`tsx`
@@ -29,13 +30,15 @@ example
 │   ├── server-action 服务端指令
 │   │   └── login 登录(server action)
 │   │       └─ loginField.ts 定义zod对象和传输数据类型
-│   ├── component/ 组件
+│   ├── components/ 组件
 │   ├── images/ 图片
 │   └── 其他资源
 ├── layout.tsx 布局
 └── page.tsx 页面
 ```
 ### 组件规范
+* 表单使用`@/components/Form`配合zod
+* 简单的弹窗、消息等使用`App.useApp`调用
 * 客户端组件不能直接引用服务端组件,反过来可以。如果有需要,创建客户端组件并以服务端组件作为参数(children或者其他)。
   #### page.tsx  
   ```ts
