@@ -35,7 +35,7 @@ export default function Home() {
 		<Layout className={fullBox}>
 			<FloatButton></FloatButton>
 			<Image alt='' src={pic} onClick={() => modal.info({ title: 1 })}></Image>
-			<Upload accept='image/*' multiple={false}>
+			<Upload accept='image/*' multiple={false} beforeUpload={()=>false}>
 				<Button type='primary' icon={<UploadOutlined></UploadOutlined>}></Button>
 			</Upload>
 			<Card className={[positionCenter,'w-1/3'].join(' ')}>

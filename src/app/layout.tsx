@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
-import { AntdContext } from '@/antd-context'
+import { AntdConfig } from '@/antd-config'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
+import { App } from 'antd'
 import favicon from '@/favicon.ico'
 import '@/globals.css'
+import { fullBox } from '@/styles'
 
 export const metadata: Metadata = {
 	title: 'next项目模板',
@@ -12,13 +15,19 @@ type Props = {
 	children: React.ReactNode
 }
 
+const MainViewPort = [fullBox, 'overflow-hidden'].join(' ')
+
 export default function RootLayout(props: Props) {
 	return (
 		<html lang="zh-CN">
-			<body>
-				<AntdContext>
-					{props.children}
-				</AntdContext>
+			<body className={MainViewPort}>
+				<AntdRegistry>
+					<App className={MainViewPort}>
+						<AntdConfig>
+							{props.children}
+						</AntdConfig>
+					</App>
+				</AntdRegistry>
 			</body>
 		</html>
 	)
