@@ -15,14 +15,14 @@ type Props = {
 	children: React.ReactNode
 }
 
-const MainViewPort = [fullBox, 'overflow-hidden'].join(' ')
+const MainViewport = [fullBox, 'overflow-hidden'].join(' ')
 
 export default function RootLayout(props: Props) {
 	return (
 		<html lang="zh-CN">
-			<body className={MainViewPort}>
+			<body className={MainViewport}>
 				<AntdRegistry>
-					<App className={MainViewPort}>
+					<App className={MainViewport}>
 						<AntdConfig>
 							{props.children}
 						</AntdConfig>
