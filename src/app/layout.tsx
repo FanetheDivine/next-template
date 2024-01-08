@@ -22,11 +22,11 @@ export default function RootLayout(props: Props) {
 		<html lang="zh-CN">
 			<body className={MainViewport}>
 				<AntdRegistry>
-					<App className={MainViewport}>
-						<AntdConfig>
+					<AntdConfig>
+						<App className={MainViewport}>
 							{props.children}
-						</AntdConfig>
-					</App>
+						</App>
+					</AntdConfig>
 				</AntdRegistry>
 			</body>
 		</html>

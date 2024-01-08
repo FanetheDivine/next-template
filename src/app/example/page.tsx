@@ -16,7 +16,7 @@ const [Form, FormItem] = getZodForm(LoginField)
 export default function Home() {
 	const router = useRouter()
 	const pathname = usePathname()
-	const { modal } = App.useApp()
+	const app = App.useApp()
 	async function submit(value: LoginField) {
 		try {
 			await login(value)
@@ -24,9 +24,9 @@ export default function Home() {
 			router.push(`${pathname}/subPage`)
 		} catch (e) {
 			if (e instanceof Error) {
-				message.error(e.message)
+				app.message.error(e.message)
 			} else {
-				message.error('登录失败')
+				app.message.error('登录失败')
 			}
 		}
 	}
@@ -34,7 +34,7 @@ export default function Home() {
 	return (
 		<Layout className={fullBox}>
 			<FloatButton></FloatButton>
-			<Image alt='' src={pic} onClick={() => modal.info({ title: 1 })}></Image>
+			<Image alt='' src={pic} onClick={() => app.modal.info({ title: 1 })}></Image>
 			<Upload accept='image/*' multiple={false} beforeUpload={()=>false}>
 				<Button type='primary' icon={<UploadOutlined></UploadOutlined>}></Button>
 			</Upload>
