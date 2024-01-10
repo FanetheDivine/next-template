@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { AntdConfig } from '@/antd-config'
 import favicon from '@/favicon.ico'
 import '@/globals.css'
-import { fullBox } from '@/styles'
 
 export const metadata: Metadata = {
 	title: 'next项目模板',
@@ -13,12 +12,10 @@ type Props = {
 	children: React.ReactNode
 }
 
-const MainViewport = [fullBox, 'overflow-hidden'].join(' ')
-
 export default function RootLayout(props: Props) {
 	return (
 		<html lang="zh-CN">
-			<body className={MainViewport}>
+			<body>
 				<AntdConfig>
 					{props.children}
 				</AntdConfig>
