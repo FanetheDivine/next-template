@@ -33,12 +33,12 @@ export default function Home() {
 
 	return (
 		<Layout className={fullBox}>
-			<FloatButton></FloatButton>
+			<FloatButton onClick={() => app.modal.confirm({ title: '11' })}></FloatButton>
 			<Image alt='' src={pic} onClick={() => app.modal.info({ title: 1 })}></Image>
-			<Upload accept='image/*' multiple={false} beforeUpload={()=>false}>
+			<Upload accept='image/*' multiple={false} beforeUpload={() => false}>
 				<Button type='primary' icon={<UploadOutlined></UploadOutlined>}></Button>
 			</Upload>
-			<Card className={[positionCenter,'w-1/3'].join(' ')}>
+			<Card className={[positionCenter, 'w-1/3'].join(' ')}>
 				<Form onFinish={submit}>
 					<FormItem name='email' label='邮箱'><Input></Input></FormItem>
 					<FormItem name='password' label='密码'><Password></Password></FormItem>
