@@ -40,6 +40,7 @@ example
 * 表单使用`@/components/Form`配合zod
 * 简单的弹窗、消息等使用`App.useApp`调用
 * 主视窗已经设置为`overflow:hidden`。有滚动需要自行设置。
+* 一般情况下,尽可能多使用rem、百分数,少使用em、vh、vw,不明确指定px
 * 使用antd的Layout组件,体现底色
 * 客户端组件不能直接引用服务端组件,反过来可以。如果有需要,创建客户端组件并以服务端组件作为参数(children或者其他)。
   #### page.tsx  
