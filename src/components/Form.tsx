@@ -6,7 +6,7 @@ import Item from 'antd/es/form/FormItem'
 import { z } from 'zod'
 
 /** 
- * 通过简单zod构造基于antd的表单
+ * 通过简单zod构造基于antd的表单 仅客户端组件中使用
  * @example
  * const [Form, FormItem, useForm] = getZodForm(zodObj)
  */
