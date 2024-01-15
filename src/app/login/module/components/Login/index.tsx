@@ -43,7 +43,7 @@ export function Login(props: Props) {
     return (
         <>
         {session.data?.user?.name}
-            <Button onClick={()=>signIn('credentials',{email:'11',a:1})}>Login</Button>
+            <Button onClick={()=>signIn('credentials',{email:'11',a:1,callbackUrl:'/example/subPage'})}>Login</Button>
             <Form initialValues={{ csrfToken: props.token }} onFinish={submit}>
                 <FormItem name='csrfToken'><Input disabled></Input></FormItem>
                 <FormItem name='email' label='邮箱'><Input type='email'></Input></FormItem>

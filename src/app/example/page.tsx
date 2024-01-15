@@ -35,6 +35,7 @@ export default function Home() {
 
 	return (
 		<Layout className={fullBox}>
+			<Link href='/example/subPage'><Button>subPage</Button></Link>
 			<FloatButton onClick={() => app.modal.confirm({ title: '11' })}></FloatButton>
 			<Image alt='' src={pic} onClick={() => app.modal.info({ title: 1 })}></Image>
 			<Upload accept='image/*' multiple={false} beforeUpload={() => false}>
