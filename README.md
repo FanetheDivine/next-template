@@ -10,9 +10,7 @@
 * 日期时间 `moment`
 * 校验数据格式 `zod`
 * 客户端状态管理 `swr`
-* 常见工具函数 `lodash`
-* 登录鉴权 `next-auth`
-* 数据库操作 `prisma`  
+* 常见工具函数 `lodash` 
 **说明**:部署使用npm i --production命令,package.json的dependencies中仅保留需要的包
 ## 项目规范
 ### 后缀名

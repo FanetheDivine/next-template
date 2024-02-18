@@ -12,7 +12,6 @@ import { LoginOutlined, UndoOutlined, UploadOutlined } from '@ant-design/icons'
 import { getZodForm } from '@/components/Form'
 import { fullBox, positionCenter } from '@/styles'
 import Link from 'next/link'
-import { signIn } from 'next-auth/react'
 
 const [Form, FormItem] = getZodForm(LoginField)
 export default function Home() {
@@ -53,7 +52,7 @@ export default function Home() {
 					</FormItem>
 				</Form>
 			</Card>
-			<Button icon={<LoginOutlined/>} onClick={()=>signIn()}>
+			<Button icon={<LoginOutlined/>} >
 				login
 			</Button>
 		</Layout>
