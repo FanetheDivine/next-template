@@ -1,8 +1,7 @@
 'use client'
 
-import { Form as AntdForm, FormItemProps } from 'antd'
-import { useForm as useAntdForm } from 'antd/es/form/Form'
-import Item from 'antd/es/form/FormItem'
+import { Form, FormItemProps } from 'antd'
+import { useForm } from 'antd/es/form/Form'
 import { z } from 'zod'
 
 /** 
@@ -10,35 +9,24 @@ import { z } from 'zod'
  * @example
  * const [Form, FormItem, useForm] = getZodForm(zodObj)
  */
-export function getZodForm<
-    ZodType extends z.ZodObject<{
-        [key: string]: z.ZodFirstPartySchemaTypes
-    }, any, any>
->(zod: ZodType) {
-    type FormField = z.infer<ZodType>
-    const Form = AntdForm<FormField>
-    const AntdFormItem = Item<FormField>
-    const FormItem =
-        (props: FormItemProps<FormField> & { name?: string }) => {
-            const field = props.name
-            if (!field) {
-                return <AntdFormItem {...props} />
-            } else {
-                const fieldZod = zod.shape[field]
-                return (
-                    <AntdFormItem {...props} required={!fieldZod.isOptional()}
-                        rules={[{
-                            validator: async (_, val) => {
-                                const res = fieldZod.safeParse(val === '' ? undefined : val)
-                                if (!res.success) {
-                                    throw new Error(res.error.errors[0].message)
-                                }
-                            }
-                        }]}
-                    />
-                )
-            }
-        }
-    const useForm = useAntdForm<FormField>
-    return [Form, FormItem, useForm] as const
+export function getZodForm<T extends z.ZodObject<Record<string, z.ZodFirstPartySchemaTypes>>>(zod: T) {
+    type FormField = z.infer<T>
+
+    /** 必须指定`name`描述表单对应项的属性名 */
+    function FormItem(props: FormItemProps<FormField> & { name: keyof FormField & string }) {
+        const fieldZod = zod.shape[props.name]
+        return (
+            <Form.Item<FormField> {...props} required={!fieldZod.isOptional()}
+                rules={[{
+                    validator: async (_, val) => {
+                        const res = fieldZod.safeParse(val === '' ? undefined : val)// 空串被zod视为有值 做特殊处理
+                        if (!res.success) {
+                            throw new Error(res.error.errors[0].message)
+                        }
+                    }
+                }]}
+            />
+        )
+    }
+    return [Form<FormField>, FormItem, useForm<FormField>] as const // [Form,FormItem,useForm]
 }
