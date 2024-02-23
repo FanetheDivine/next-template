@@ -5,7 +5,8 @@ import { useForm } from 'antd/es/form/Form'
 import { z } from 'zod'
 
 /** 
- * 通过简单zod构造基于antd的表单 仅客户端组件中使用
+ * 通过简单zod构造基于antd的表单 仅客户端组件中使用  
+ * 通过`htmlType`设置的提交和重置按钮需要处于FormItem内才能生效
  * @example
  * const [Form, FormItem, useForm] = getZodForm(zodObj)
  */
@@ -13,8 +14,12 @@ export function getZodForm<T extends z.ZodObject<Record<string, z.ZodFirstPartyS
     type FormField = z.infer<T>
 
     /** 必须指定`name`描述表单对应项的属性名 */
-    function FormItem(props: FormItemProps<FormField> & { name: keyof FormField & string }) {
-        const fieldZod = zod.shape[props.name]
+    function FormItem(props: FormItemProps<FormField> & { name?: keyof FormField & string }) {
+        const field = props.name
+        if (!field) {
+            return <Form.Item<FormField> {...props} />
+        }
+        const fieldZod = zod.shape[field]
         return (
             <Form.Item<FormField> {...props} required={!fieldZod.isOptional()}
                 rules={[{
