@@ -46,10 +46,10 @@ example
   ```
 * 表单使用`@/components/Form`配合zod
 * 简单的弹窗、消息等使用`App.useApp`调用
-* 主视窗已经设置为`overflow:hidden`。有滚动需要自行设置。
+* 主视窗已经设置为`overflow:hidden`.有滚动需要自行设置.
 * 一般情况下,尽可能多使用rem、百分数,少使用em、vh、vw,不明确指定px
 * 使用antd的Layout组件,体现底色
-* 客户端组件不能直接引用服务端组件,反过来可以。如果有需要,创建客户端组件并以服务端组件作为参数(children或者其他)。
+* 客户端组件不能直接引用服务端组件,反过来可以.如果有需要,创建客户端组件并以服务端组件作为参数(children或者其他).
   #### page.tsx  
   ```ts
   import ClientComponent from './module/component/ClientComponent'
@@ -78,7 +78,9 @@ example
     )
   }
   ```
-* 客户端组件中,抽取状态和依赖此状态的组件至新组件,尽可能下沉状态的层级。如果新组件需要子组件,通过传参解决。参考上一条。
-* 在`'./module/state'`下使用`useSWR`创建钩子管理状态,以当前目录+数据名作为key,确保唯一性。多个组件共享的状态,在`@/state/`下创建钩子。
+* 客户端组件中,抽取状态和依赖此状态的组件至新组件,尽可能下沉状态的层级.如果新组件需要子组件,通过传参解决.参考上一条.
+* 在`'./module/state'`下使用`useSWR`创建钩子管理状态,以当前目录+数据名作为key,确保唯一性.多个组件共享的状态,在`@/state/`下创建钩子.
 * 客户端组件获取浏览器url信息通过`next/navigation`的钩子进行
-* 尽可能使用`server-action`而不是`route.ts`。在与`server-action`不同的文件中通过zod定义请求体类型,在客户端和服务端双端校验。
+* 尽可能使用`server-action`而不是`route.ts`.在与`server-action`不同的文件中通过zod定义请求体类型,在客户端和服务端双端校验.
+* 充分利用`Skeleton`(骨架屏)和`Loading`组件填充加载时内容
+* 利用`@/utils/isMobile`判断用户是否处于触摸设备以展示不同的内容
