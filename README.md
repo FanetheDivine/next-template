@@ -82,5 +82,5 @@ example
 * 在`'./module/state'`下使用`useSWR`创建钩子管理状态,以当前目录+数据名作为key,确保唯一性.多个组件共享的状态,在`@/state/`下创建钩子.
 * 客户端组件获取浏览器url信息通过`next/navigation`的钩子进行
 * 尽可能使用`server-action`而不是`route.ts`.在与`server-action`不同的文件中通过zod定义请求体类型,在客户端和服务端双端校验.
-* 充分利用`Skeleton`(骨架屏)和`Loading`组件填充加载时内容
+* 充分利用React的`Suspense`组件、Next的`loading.tsx`,以及antd的`Skeleton`(骨架屏)和`Loading`组件填充加载时内容
 * 利用`@/utils/isMobile`判断用户是否处于触摸设备以展示不同的内容
