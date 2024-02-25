@@ -1,8 +1,5 @@
 # Next.js模板项目
-## 语言
-`typescript`
-## 框架
-`Next.js 14`
+基于`Next.js 14.0.4`和`typescript`,为`Next.js`项目提供模板
 ## 工具库
 * 样式 `tailwindcss`
 * 组件库 `antd`
@@ -12,41 +9,46 @@
 * 客户端状态管理 `swr`
 * 常见工具函数 `lodash` 
 * 常用钩子 `ahooks`
-**说明**:部署使用npm i --production命令,package.json的dependencies中仅保留需要的包
-## 项目规范
-### 后缀名
-使用`JSX`的文件后缀名为`tsx`
-### 公共资源
-* `'src/'`简写为`'@/' `,`@/`下`app`目录为页面路径,其余为公共资源
-* `'@/utils'`放置工具函数和钩子,`'@/state'`放置全局状态,`'@/components'`放置全局组件
-### 路由
-采用App Router规范
-### 项目结构规范
-每级路由都遵循以下规范(以`/example/`为例)
-```
-example
-├── subPage/ 下级路由
-├── module 本级路由资源
-│   ├── server-action 服务端指令
-│   │   └── login 登录(server action)
-│   │       └─ loginField.ts 定义zod对象和传输数据类型
-│   ├── components/ 组件
-│   ├── images/ 图片
-│   ├── state/ 局部状态
-│   └── 其他资源
-├── layout.tsx 布局
-└── page.tsx 页面
-```
-### 开发规范
-* commit message具有格式要求,例如:
+## 项目结构
+* `src/` 简写为`@/`
+* `@/app` Next.js App Router下的页面和路由.每级路由遵循以下结构(以`@/app/`为例)
   ```
-  perf(全局): 去除一些包
+  app
+  ├── example/ 下级路由
+  ├── module 本级路由资源
+  │   ├── components/ 组件
+  │   ├── images/ 图片
+  │   ├── state/ 状态
+  │   └── 其他资源
+  ├── layout.tsx 布局
+  └── page.tsx 页面
+  ```
+* `@/`下其余的文件夹放置全局资源
+  * `@/state` 全局状态
+  * `@/components'` 全局组件
+  * `@/utils` 全局工具函数和钩子
+  * `@/lib` 不被组件直接引用的全局工具函数和钩子
+## server action
+web前后端不直接进行网络请求,而是使用[server action](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations).`sevrer action`是运行于服务端的函数,但可以在任何位置被调用.`server action`只接受简单的参数,即数字,字符串和表单(尽管表单内可以放置二进制对象)等.  
+尽量按照`server-action`的类型描述提供参数,否则容易报错.下面是一个错误的例子
+```ts
+<Button onClick={serverAction}></Button>//serverAction隐式接受了一个复杂参数(事件) 导致抛出异常
+```
+## 代码提交规范
+* 控制每次提交的代码的数量和范围
+* 提交代码前成功运行项目并进行简单的自测
+* 提交代码时,消息具有以下结构
+  ```
+  perf(本次提交涉及的范围): 简单描述
 
-  去除sharp,next-auth等包
+  具体描述
   ```
+## 开发规范
 * 表单使用`@/components/Form`配合zod
 * 简单的弹窗、消息等使用`App.useApp`调用
 * 主视窗已经设置为`overflow:hidden`.有滚动需要自行设置.
+* 多个样式使用`classnames`库进行联合
+* 多个端共享的变量(例如zod对象),应该单独定义在一个文件.此外,服务端组件向客户端组件传输的参数,必须是*简单对象*(`plain object`)
 * 一般情况下,尽可能多使用rem、百分数,少使用em、vh、vw,不明确指定px
 * 使用antd的Layout组件,体现底色
 * 客户端组件不能直接引用服务端组件,反过来可以.如果有需要,创建客户端组件并以服务端组件作为参数(children或者其他).
