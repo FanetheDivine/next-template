@@ -1,0 +1,36 @@
+@layer basic, theme, base, antd, components, utilities;
+
+@import 'tailwindcss';
+
+@layer basic {
+  * {
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #bbb;
+      border-radius: 9999px;
+    }
+  }
+
+  html,
+  body,
+  .app {
+    @apply relative m-0 h-full w-full p-0;
+  }
+
+  html {
+    @apply min-w-80 overflow-auto;
+  }
+
+  body,
+  .app {
+    @apply overflow-hidden;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "donjayamanne.githistory",
+    "arturock.gitstash",
+    "ritwickdey.LiveServer",
+    "formulahendry.code-runner",
+    "Lokalise.i18n-ally",
+    "GitHub.vscode-pull-request-github"
+  ]
+}
