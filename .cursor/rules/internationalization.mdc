@@ -1,0 +1,37 @@
+---
+alwaysApply: true
+---
+
+# 国际化与路由
+
+## next-intl 基础
+
+- 语言包位于 `messages/{locale}.json`。
+
+- 服务端调用 `getLocale()`、`getTranslations()`；客户端用 `useTranslations()`、`useLocale()`。
+- 使用 `hasLocale` 判断是否是合法的语言，如果不是则重定向到默认语言的相同页面。
+- `i18n.md` 描述整体策略：根据请求头重定向至 `/[locale]/...`。
+
+## 导航与链接
+
+- **必须** 使用 `@/i18n/navigation` 提供的 `Link`、`useRouter`、`redirect` 等，以保持 locale。
+- 禁止直接 import `next/link` 或 `next/navigation`。
+- `src/proxy.ts` 与 middleware 负责根路径到默认语言的映射。
+
+## App Router 结构
+
+- 所有实际页面放在 `src/app/[locale]`，可使用子目录或路由组 `(group)`。
+- `app/page.tsx`/`app/layout.tsx` 仅做重定向或包裹，`[locale]/layout.tsx` 设置语言上下文。
+- `layout.tsx` 不可返回 `<html>`；该标签由根布局负责设置 `lang`。
+
+## 数据获取与渲染
+
+- Server Components：直接 `await` 服务端逻辑（例如 `sleep`, `isMobile`）。
+- Client Components：使用 SWR 搭配统一 fetcher，并在 UI 层处理 loading/error。
+- API route 置于 `app/api/*`；静态导出时需确保不依赖动态服务器特性。
+
+## 其他注意
+
+- `NEXT_PUBLIC_*` 变量可在客户端读取，其余仅限服务端。
+- 需要 Bundle 分析或导出时使用脚本 `pnpm build:analyze`、`pnpm build:export`。
+- 遵循 `i18n.md` 提示，处理 not-found、error 等特殊页面时同样保持 locale。

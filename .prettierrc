@@ -1,0 +1,23 @@
+{
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "semi": false,
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "useTabs": false,
+  "htmlWhitespaceSensitivity": "ignore",
+  "printWidth": 100,
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "importOrder": [
+    "^next",
+    "^react$",
+    "^react.+$",
+    "^antd$",
+    "^antd.+$",
+    "^@ant-design.*$",
+    "<THIRD_PARTY_MODULES>",
+    "^@/[^/]*$",
+    "^@/.*$",
+    "^[./]"
+  ]
+}

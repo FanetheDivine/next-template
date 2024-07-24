@@ -1,0 +1,34 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.quickSuggestionsDelay": 0,
+  "editor.parameterHints.enabled": false,
+  "editor.autoClosingBrackets": "always",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "README.md": "LICENSE,*.md",
+    "package.json": ".prettierrc,.gitignore,*.yaml,*.json,*.d.ts,*.config.ts,*.config.js,next.config.mjs,postcss.config.mjs"
+  },
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    "class:list",
+    ".*[Cc]lass(Name)?"
+  ],
+  "emmet.showExpandedAbbreviation": "never",
+  "css.lint.unknownAtRules": "ignore",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "i18n-ally.localesPaths": ["messages"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.displayLanguage": "zh",
+  "i18n-ally.enabledFrameworks": ["next-intl"]
+}
