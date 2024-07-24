@@ -9,3 +9,5 @@
 * moment 时期时间处理工具
 * swr 管理网络请求
 * husky+commitlint 控制git规范
+# 协议
+MIT
