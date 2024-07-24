@@ -8,3 +8,4 @@
 * zod 类型校验工具
 * moment 时期时间处理工具
 * swr 管理网络请求
+* husky+commitlint 控制git规范
