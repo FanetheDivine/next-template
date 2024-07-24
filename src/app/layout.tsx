@@ -5,7 +5,7 @@ import { AntdProvider } from "@/lib/AntdProvider";
 
 
 export const metadata: Metadata = {
-  title: "主题工具系统示例",
+  title: "Next.js 14 + antd + tailwindcss 模板项目",
 };
 
 const RootLayout: FC<PropsWithChildren> = props => {
