@@ -4,9 +4,9 @@
   "name": "Node.js",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image":"mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
-  "initializeCommand":"docker volume create pnpm_store",
+  "initializeCommand":"docker volume create pnpm-store",
   "postCreateCommand": "sudo chown -R node:node /workspaces /.pnpm-store && pnpm config set store-dir /.pnpm-store && pnpm install",
-  "mounts": [{"source":"pnpm_store","target": "/.pnpm-store","type": "volume"}]
+  "mounts": [{"source":"pnpm-store","target": "/.pnpm-store","type": "volume"}]
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
