@@ -3,13 +3,16 @@
 {
   "name": "Node.js",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "image":"mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "initializeCommand":"docker volume create pnpm_store",
+  "postCreateCommand": "sudo chown -R node:node /workspaces /.pnpm-store && pnpm config set store-dir /.pnpm-store && pnpm install",
+  "mounts": [{"source":"pnpm_store","target": "/.pnpm-store","type": "volume"}]
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "sudo chown -R node:node /workspaces && export PNPM_HOME=\"/pnpm\" && export PATH=\"$PNPM_HOME:$PATH\" && pnpm install"
+  // "postCreateCommand": "yarn install"
   // Configure tool-specific properties.
   // "customizations": {},
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
