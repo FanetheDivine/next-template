@@ -1,23 +1,20 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { FC, PropsWithChildren } from "react";
-import { AntdProvider } from "@/lib/AntdProvider";
-
+import { FC, PropsWithChildren } from 'react'
+import type { Metadata } from 'next'
+import { AntdProvider } from '@/lib/AntdProvider'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: "Next.js 14 + antd + tailwindcss 模板项目",
-};
+  title: 'Next14 项目模板',
+}
 
-const RootLayout: FC<PropsWithChildren> = props => {
+const RootLayout: FC<PropsWithChildren> = (props) => {
   return (
-    <html lang="zh-CN">
+    <html lang='zh-CN'>
       <body>
-        <AntdProvider>
-          {props.children}
-        </AntdProvider>
+        <AntdProvider>{props.children}</AntdProvider>
       </body>
     </html>
-  );
+  )
 }
 
 export default RootLayout

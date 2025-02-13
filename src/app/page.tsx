@@ -1,9 +1,13 @@
-import { Button } from "antd";
-import { FC } from "react";
+import { FC } from 'react'
+import { absoluteCenter } from '@/styles'
+import { Button } from 'antd'
+import classnames from 'classnames'
 
 const Page: FC = () => {
   return (
-    <Button type='primary' className='w-10 bg-black'>test</Button>
+    <Button type='primary' className={classnames(absoluteCenter, 'bg-black')}>
+      Test Page
+    </Button>
   )
 }
 

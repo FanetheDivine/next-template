@@ -1,0 +1,6 @@
+# 获取暂存区中的文件 格式化后再加入暂存区
+file=$(git diff --name-only --cached)
+if [ -n "$files" ]; then
+  prettier --write $file
+  git add $file
+fi

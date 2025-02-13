@@ -1,0 +1,10 @@
+{
+  "'use client'": {
+    "prefix": ["use", "usc", "usec"],
+    "body": ["'use client'"]
+  },
+  "'use server'": {
+    "prefix": ["use", "uss", "uses"],
+    "body": ["'use server'"]
+  }
+}
