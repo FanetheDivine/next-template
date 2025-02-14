@@ -2,5 +2,6 @@
 file=$(git diff --name-only --cached)
 if [ -n "$files" ]; then
   prettier --write $file
+  next lint $file
   git add $file
 fi

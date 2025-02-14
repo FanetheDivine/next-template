@@ -6,7 +6,8 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint":"prettier --write src/"
+    "lint": "next lint",
+    "prettier": "prettier --write src/"
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
