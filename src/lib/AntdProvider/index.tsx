@@ -1,5 +1,3 @@
-'use client'
-
 import { FC, PropsWithChildren } from 'react'
 import { fullContainer } from '@/styles'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
