@@ -1,13 +1,11 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  content: [
-    './src/**/*.{ts,tsx,mdx}',
-  ],
+  content: ['./src/**/*.{ts,tsx,mdx,vue}'],
   theme: {},
   plugins: [],
   corePlugins: {
-    preflight: false
-  }
-};
-export default config;
+    preflight: false,
+  },
+}
+export default config

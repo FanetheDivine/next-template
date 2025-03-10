@@ -10,8 +10,8 @@
     "^react$",
     "^next",
     "<THIRD_PARTY_MODULES>",
-    "^@/utils/(.*)$",
-    "^@/components/(.*)$",
+    "^@/[^/]*$",
+    "^@/.*$",
     "^[./]"
   ]
 }
