@@ -1,11 +1,13 @@
 # 获取暂存区中的文件 格式化和校验后再加入暂存区
-files=$(
-  git diff --name-only --cached |
-  grep -E '\.(js|ts|jsx|tsx|vue|css|scss|less|html)$' |
-  tr '\n' ' '
-)
-if [ -n "$files" ]; then
-  prettier --config .prettierrc --write $files
-  git add $files
-  eslint --no-fix $files
+files=$(git diff --name-only --cached)
+
+prettier_files=$(echo "$files" | grep -E '\.(js|ts|jsx|tsx|vue|css|scss|less|html|md|json)$' || exit 0)
+if [ -n "$prettier_files" ]; then
+  prettier --config .prettierrc --write $prettier_files
+  git add $prettier_files
+fi
+
+eslint_files=$(echo "$files" | grep -E '\.(js|ts|jsx|tsx|vue)$' || exit 0)
+if [ -n "$eslint_files" ]; then
+  eslint --no-fix $eslint_files
 fi
