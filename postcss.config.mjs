@@ -2,10 +2,7 @@
 const config = {
   plugins: {
     tailwindcss: {},
-    'postcss-increase-specificity': {
-      repeat: 1,
-    }
   },
-};
+}
 
-export default config;
+export default config
