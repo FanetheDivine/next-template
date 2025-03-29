@@ -1,5 +1,5 @@
 # 获取暂存区中的文件 格式化和校验后再加入暂存区
-files=$(git diff --name-only --cached)
+files=$(git diff --name-only --cached --diff-filter=ACM)
 
 prettier_files=$(echo "$files" | grep -E '\.(js|ts|jsx|tsx|vue|css|scss|less|html|md|json)$' || exit 0)
 if [ -n "$prettier_files" ]; then
