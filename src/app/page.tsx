@@ -1,13 +1,18 @@
 import { FC } from 'react'
-import { absoluteCenter } from '@/styles'
+import Link from 'next/link'
 import { Button } from 'antd'
-import classnames from 'classnames'
+import { absoluteCenter } from '@/styles'
+import classnames from '@/utils/classnames'
+import { sleep } from '@/utils/sleep'
 
-const Page: FC = () => {
+const Page: FC = async () => {
+  await sleep(2000)
   return (
-    <Button type='primary' className={classnames(absoluteCenter, 'bg-black')}>
-      Test Page
-    </Button>
+    <Link href='/test1'>
+      <Button type='primary' className={classnames(absoluteCenter, 'bg-black')}>
+        Test Page
+      </Button>
+    </Link>
   )
 }
 

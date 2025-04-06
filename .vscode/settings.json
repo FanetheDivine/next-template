@@ -3,5 +3,10 @@
   "editor.formatOnSave": true,
   "editor.quickSuggestionsDelay": 0,
   "editor.parameterHints.enabled": false,
-  "editor.autoClosingBrackets": "always"
+  "editor.autoClosingBrackets": "always",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "README.md": "LICENSE,*.md",
+    "package.json": ".prettierrc,.gitignore,*.yaml,*.json,*.d.ts,*.config.ts,next.config.mjs,postcss.config.mjs"
+  }
 }
