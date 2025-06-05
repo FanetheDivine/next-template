@@ -5,6 +5,7 @@
   "trailingComma": "all",
   "tabWidth": 2,
   "useTabs": false,
+  "htmlWhitespaceSensitivity": "ignore",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
     "^react$",
