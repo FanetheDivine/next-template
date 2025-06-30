@@ -1,0 +1,10 @@
+{
+  "className?: string": {
+    "prefix": ["className?: string"],
+    "body": ["className?: string"],
+  },
+  "style?: React.CSSProperties": {
+    "prefix": ["style?: React.CSSProperties"],
+    "body": ["style?: React.CSSProperties"],
+  },
+}
