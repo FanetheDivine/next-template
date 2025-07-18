@@ -11,8 +11,6 @@ declare global {
    */
   type ValueController<V = any, NV = V, Strict extends boolean = false> = {
     value?: V
-    onChange?: Strict extends false
-      ? (newVal?: NV) => void
-      : (newVal: NV) => void
+    onChange?: Strict extends false ? (newVal?: NV) => void : (newVal: NV) => void
   }
 }

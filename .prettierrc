@@ -6,7 +6,11 @@
   "tabWidth": 2,
   "useTabs": false,
   "htmlWhitespaceSensitivity": "ignore",
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "printWidth": 100,
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
   "importOrder": [
     "^react$",
     "^next",

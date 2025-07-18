@@ -9,10 +9,7 @@ const Page: FC = async () => {
   await sleep(2000)
   return (
     <Link href='/test1'>
-      <Button
-        type='primary'
-        className={classnames(absoluteCenterClass, 'bg-black')}
-      >
+      <Button type='primary' className={classnames(absoluteCenterClass, 'bg-black')}>
         Test Page
       </Button>
     </Link>
