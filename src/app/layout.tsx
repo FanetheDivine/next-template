@@ -1,7 +1,9 @@
 import { FC, PropsWithChildren } from 'react'
 import type { Metadata } from 'next'
+import { fullContainerClass } from '@/styles'
 import { AntdProvider } from '@/lib/AntdProvider'
-import './globals.css'
+import { SWRProvider } from '@/lib/SWRProvider'
+import '@/styles/globals.css'
 
 export const metadata: Metadata = {
   title: 'Next14 项目模板',
@@ -9,9 +11,11 @@ export const metadata: Metadata = {
 
 const RootLayout: FC<PropsWithChildren> = (props) => {
   return (
-    <html lang='zh-CN'>
-      <body>
-        <AntdProvider>{props.children}</AntdProvider>
+    <html lang='zh-CN' className={fullContainerClass}>
+      <body className={fullContainerClass}>
+        <AntdProvider>
+          <SWRProvider>{props.children}</SWRProvider>
+        </AntdProvider>
       </body>
     </html>
   )

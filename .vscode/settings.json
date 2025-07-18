@@ -15,5 +15,7 @@
     "ngClass",
     "class:list",
     ".*[Cc]lass(Name)?"
-  ]
+  ],
+  "emmet.showExpandedAbbreviation": "never",
+  "css.lint.unknownAtRules": "ignore"
 }
