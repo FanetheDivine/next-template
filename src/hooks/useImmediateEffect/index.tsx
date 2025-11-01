@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef } from 'react'
 
 /** ImmediateEffect的副作用函数 接受旧的依赖项 可选择返回一个清理函数 */

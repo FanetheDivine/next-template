@@ -1,3 +1,5 @@
+'use client'
+
 import { CompositionEventHandler, ChangeEventHandler, useState } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import { ValueController, ValueControllerOptions } from 'value-controller'
