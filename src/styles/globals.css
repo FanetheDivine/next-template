@@ -1,11 +1,6 @@
-@layer basic, tailwind-base, antd;
+@layer basic, theme, base, antd, components, utilities;
 
-@layer tailwind-base {
-  @tailwind base;
-}
-
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer basic {
   * {
@@ -28,6 +23,10 @@
   html,
   body,
   .app {
-    @apply relative m-0 h-full w-full p-0;
+    position: relative;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
   }
 }

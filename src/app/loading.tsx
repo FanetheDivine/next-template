@@ -1,7 +1,3 @@
-import { FC } from 'react'
+import { DefaultLoading } from '@/components/DefaultLoading'
 
-const Loading: FC = () => {
-  return 'loading'
-}
-
-export default Loading
+export default DefaultLoading
