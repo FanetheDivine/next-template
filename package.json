@@ -16,6 +16,7 @@
     "@ant-design/nextjs-registry": "^1.0.0",
     "ahooks": "^3.8.4",
     "antd": "^5.24.0",
+    "axios": "^1.13.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "immer": "^10.1.1",
