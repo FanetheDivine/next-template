@@ -1,9 +1,5 @@
 'use client'
 
-import { FC } from 'react'
+import { DefaultError } from '@/components/DefaultError'
 
-const Error: FC = (props) => {
-  console.log(props)
-  return 'error'
-}
-export default Error
+export default DefaultError

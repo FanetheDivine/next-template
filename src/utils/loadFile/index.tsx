@@ -1,5 +1,4 @@
-const inputInstance = document.createElement('input')
-inputInstance.type = 'file'
+let inputInstance: HTMLInputElement
 let lastRejectFn: ((reason?: any) => void) | undefined
 
 type Config = Partial<Pick<HTMLInputElement, 'accept' | 'multiple' | 'webkitdirectory'>>
@@ -10,6 +9,10 @@ type Config = Partial<Pick<HTMLInputElement, 'accept' | 'multiple' | 'webkitdire
  * 注意，若取消上传，这个promise会下一次上传前进入rejected，而不是立刻变化
  */
 export function loadFile(config: Config = {}) {
+  if (!inputInstance) {
+    inputInstance = document.createElement('input')
+    inputInstance.type = 'file'
+  }
   const { accept = '', multiple = false, webkitdirectory = false } = config
   inputInstance.value = '' // 清空上一次的选择 允许选择相同文件
   inputInstance.accept = accept

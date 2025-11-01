@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState } from 'react'
 import { useMemoizedFn } from 'ahooks'
 import type { ValueController, ValueControllerOptions, OnChange, ValueObj } from 'value-controller'

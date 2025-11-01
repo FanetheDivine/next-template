@@ -1,15 +1,10 @@
-@layer basic, tailwind-base, antd;
+@layer basic, theme, base, antd, components, utilities;
 
-@layer tailwind-base {
-  @tailwind base;
-}
-
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer basic {
   * {
-    @apply overflow-hidden;
+    @apply overflow-hidden relative;
 
     &::-webkit-scrollbar {
       width: 6px;
@@ -28,6 +23,6 @@
   html,
   body,
   .app {
-    @apply relative m-0 h-full w-full p-0;
+    @apply m-0 w-full h-full p-0;
   }
 }
