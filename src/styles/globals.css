@@ -1,4 +1,4 @@
-@layer tailwind-base, antd;
+@layer basic, tailwind-base, antd;
 
 @layer tailwind-base {
   @tailwind base;
@@ -6,3 +6,28 @@
 
 @tailwind components;
 @tailwind utilities;
+
+@layer basic {
+  * {
+    @apply overflow-hidden;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #bbb;
+      border-radius: 9999px;
+    }
+  }
+
+  html,
+  body,
+  .app {
+    @apply relative m-0 h-full w-full p-0;
+  }
+}

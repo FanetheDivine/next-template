@@ -7,8 +7,8 @@
     "prefix": ["style?: React.CSSProperties"],
     "body": ["style?: React.CSSProperties"],
   },
-  "import styles from './styles.module.scss'": {
-    "prefix": ["import styles from './styles.module.scss'"],
-    "body": ["import styles from './styles.module.scss'"],
+  "import styles from './styles.module.css'": {
+    "prefix": ["import styles from './styles.module.css'"],
+    "body": ["import styles from './styles.module.css'"],
   },
 }

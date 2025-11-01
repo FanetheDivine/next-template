@@ -1,5 +1,5 @@
-import { FC } from 'react'
 import Link from 'next/link'
+import { FC } from 'react'
 import { Button } from 'antd'
 import { absoluteCenterClass } from '@/styles'
 import classnames from '@/utils/classnames'
