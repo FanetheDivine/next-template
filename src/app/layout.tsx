@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren } from 'react'
 import type { Metadata } from 'next'
+import { FC, PropsWithChildren } from 'react'
 import { AntdProvider } from '@/lib/AntdProvider'
 import { SWRProvider } from '@/lib/SWRProvider'
 import '@/styles/globals.css'
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 const RootLayout: FC<PropsWithChildren> = (props) => {
   return (
-    <html lang='zh-CN' >
-      <body >
+    <html lang='zh-CN'>
+      <body>
         <AntdProvider>
           <SWRProvider>{props.children}</SWRProvider>
         </AntdProvider>
