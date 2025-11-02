@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { hasLocale } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, getTranslations } from 'next-intl/server'
 import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { FC, PropsWithChildren } from 'react'
@@ -30,15 +31,18 @@ const RootLayout: FC<PropsWithChildren & ParamsWithLocale> = async (props) => {
   if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
+  const messages = await getMessages()
   return (
     <html lang={locale}>
       <body>
         <AntdRegistry>
-          <AntdProvider>
-            <SWRProvider>
-              <DynamicApp className='app'>{children}</DynamicApp>
-            </SWRProvider>
-          </AntdProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <AntdProvider>
+              <SWRProvider>
+                <DynamicApp className='app'>{children}</DynamicApp>
+              </SWRProvider>
+            </AntdProvider>
+          </NextIntlClientProvider>
         </AntdRegistry>
       </body>
     </html>
