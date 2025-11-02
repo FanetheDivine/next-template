@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
-import { FC, PropsWithChildren, Suspense } from 'react'
+import { FC, PropsWithChildren } from 'react'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
-import { withSuspense } from '@/utils'
 import { AntdProvider } from '@/lib/AntdProvider'
-import { DynamicApp } from '@/lib/DynamicApp'
 import { SWRProvider } from '@/lib/SWRProvider'
 import '@/styles/globals.css'
+import DefaultLoading from './loading'
+
+const DynamicApp = dynamic(() => import('antd/es/app'), { loading: DefaultLoading })
 
 export const metadata: Metadata = {
   title: 'Next14 项目模板',
@@ -19,7 +20,7 @@ const RootLayout: FC<PropsWithChildren> = (props) => {
         <AntdRegistry>
           <AntdProvider>
             <SWRProvider>
-              {withSuspense(<DynamicApp className='app'>{props.children}</DynamicApp>)}
+              <DynamicApp className='app'>{props.children}</DynamicApp>
             </SWRProvider>
           </AntdProvider>
         </AntdRegistry>
