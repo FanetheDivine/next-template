@@ -1,5 +1,5 @@
 'use client'
 
-import { DefaultError } from '@/components/DefaultError'
+import { DefaultErrorFallback } from '@/components/DefaultErrorFallback'
 
-export default DefaultError
+export default DefaultErrorFallback

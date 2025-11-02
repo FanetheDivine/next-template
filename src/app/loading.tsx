@@ -1,3 +1,3 @@
-import { DefaultLoading } from '@/components/DefaultLoading'
+import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
 
-export default DefaultLoading
+export default DefaultLoadingFallback

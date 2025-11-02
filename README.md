@@ -33,3 +33,4 @@
 - `@/types`定义了常见的类型
   - `Style` `className`和`style`的类型
   - `ValueController` `value`&`onChange`
+- `@/components`定义了默认的fallback

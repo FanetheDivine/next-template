@@ -4,7 +4,7 @@ import { FC } from 'react'
 import { Result, Button } from 'antd'
 import { RollbackOutlined } from '@ant-design/icons'
 
-export const DefaultError: FC<{ error?: Error; reset?: () => void }> = (props) => {
+export const DefaultErrorFallback: FC<{ error?: Error; reset?: () => void }> = (props) => {
   const { error, reset } = props
   return (
     <Result

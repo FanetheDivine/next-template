@@ -1,5 +1,5 @@
 import { ComponentType, forwardRef, ReactNode, Suspense } from 'react'
-import { DefaultLoading } from '@/components/DefaultLoading'
+import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
 import { isReactNode } from '../isReactNode'
 
 /** 为一个ReactNode包裹Suspense */
@@ -9,7 +9,7 @@ export function withSuspense<T extends ComponentType<any>>(Comp: T, fallback?: R
 
 export function withSuspense<T extends ComponentType<any>>(
   arg: ReactNode | T,
-  fallback: ReactNode = <DefaultLoading />,
+  fallback: ReactNode = <DefaultLoadingFallback />,
 ) {
   if (isReactNode(arg)) {
     const children: ReactNode = arg

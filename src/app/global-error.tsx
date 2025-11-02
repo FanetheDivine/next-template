@@ -5,7 +5,7 @@ import { FC } from 'react'
 import { Result, Button } from 'antd'
 import { RollbackOutlined } from '@ant-design/icons'
 
-const GlobalError: FC = () => {
+const GlobalErrorFallback: FC = () => {
   return (
     <Result
       className={'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-4/5'}
@@ -22,4 +22,4 @@ const GlobalError: FC = () => {
   )
 }
 
-export default GlobalError
+export default GlobalErrorFallback
