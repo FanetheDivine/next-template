@@ -1,4 +1,4 @@
-# Next.js 14 + antd + tailwindcss 项目模板
+# Next.js + antd + tailwindcss 项目模板
 
 - `ahooks` 常见客户端 hook
 - `immer` & `use-immer` 处理复杂、嵌套的状态
