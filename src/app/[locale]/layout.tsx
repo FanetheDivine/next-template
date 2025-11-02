@@ -32,7 +32,7 @@ const RootLayout: FC<PropsWithChildren & ParamsWithLocale> = async (props) => {
   if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
-  const messages = await getMessages()
+  const messages = await getMessages({ locale })
   return (
     <html lang={locale}>
       <body>
