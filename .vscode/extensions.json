@@ -4,6 +4,8 @@
     "dbaeumer.vscode-eslint",
     "bradlc.vscode-tailwindcss",
     "donjayamanne.githistory",
-    "arturock.gitstash"
+    "arturock.gitstash",
+    "ritwickdey.LiveServer",
+    "formulahendry.code-runner"
   ]
 }
