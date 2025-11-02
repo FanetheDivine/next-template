@@ -8,6 +8,7 @@ import { FC, PropsWithChildren } from 'react'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
 import { routing } from '@/i18n/routing'
+import '@/styles/globals.css'
 
 const AntdProvider = dynamic(() => import('@/lib/AntdProvider'), {
   loading: DefaultLoadingFallback,
