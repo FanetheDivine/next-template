@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
+    "build:export": "EXPORT=true next build",
     "build:analyze": "ANALYZE=true next build --webpack",
+    "build:export analyze": "EXPORT=true ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write src/"
