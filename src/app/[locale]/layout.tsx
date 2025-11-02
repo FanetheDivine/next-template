@@ -37,13 +37,13 @@ const RootLayout: FC<PropsWithChildren & ParamsWithLocale> = async (props) => {
     <html lang={locale}>
       <body>
         <AntdRegistry>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <AntdProvider>
-              <SWRProvider>
-                <DynamicApp className='app'>{children}</DynamicApp>
-              </SWRProvider>
-            </AntdProvider>
-          </NextIntlClientProvider>
+          {/* <NextIntlClientProvider locale={locale} messages={messages}> */}
+          <AntdProvider>
+            <SWRProvider>
+              <DynamicApp className='app'>{children}</DynamicApp>
+            </SWRProvider>
+          </AntdProvider>
+          {/* </NextIntlClientProvider> */}
         </AntdRegistry>
       </body>
     </html>
