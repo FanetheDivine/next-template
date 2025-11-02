@@ -13,3 +13,5 @@ export const AntdProvider: FC<PropsWithChildren> = (props) => {
     </StyleProvider>
   )
 }
+
+export default AntdProvider

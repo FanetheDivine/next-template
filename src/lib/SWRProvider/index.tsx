@@ -5,3 +5,5 @@ import { SWRConfig } from 'swr'
 export const SWRProvider: FC<PropsWithChildren> = (props) => {
   return <SWRConfig>{props.children}</SWRConfig>
 }
+
+export default SWRProvider

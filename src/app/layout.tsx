@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { FC, PropsWithChildren } from 'react'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
-import { AntdProvider } from '@/lib/AntdProvider'
-import { SWRProvider } from '@/lib/SWRProvider'
 import '@/styles/globals.css'
 import DefaultLoading from './loading'
 
+const AntdProvider = dynamic(() => import('@/lib/AntdProvider'), { loading: DefaultLoading })
+const SWRProvider = dynamic(() => import('@/lib/SWRProvider'), { loading: DefaultLoading })
 const DynamicApp = dynamic(() => import('antd/es/app'), { loading: DefaultLoading })
 
 export const metadata: Metadata = {
