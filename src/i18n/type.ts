@@ -1,4 +1,4 @@
-import locales from '@/../locales/zh.json'
+import locales from '@/../messages/zh.json'
 import { routing } from '@/i18n/routing'
 
 declare module 'next-intl' {
