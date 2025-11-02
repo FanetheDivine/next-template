@@ -1,8 +1,7 @@
-import Link from 'next/link'
 import { FC } from 'react'
 import { Button } from 'antd'
 import { AbsoluteCenter } from '@/styles'
-import { routing } from '@/i18n/routing'
+import { Link } from '@/i18n/navigation'
 import { sleep } from '@/utils/sleep'
 
 const Page: FC = async () => {
@@ -17,7 +16,3 @@ const Page: FC = async () => {
 }
 
 export default Page
-
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }))
-}
