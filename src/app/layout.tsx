@@ -1,6 +1,10 @@
 import type { Metadata } from 'next'
-import { FC, PropsWithChildren } from 'react'
+import dynamic from 'next/dynamic'
+import { FC, PropsWithChildren, Suspense } from 'react'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
+import { withSuspense } from '@/utils'
 import { AntdProvider } from '@/lib/AntdProvider'
+import { DynamicApp } from '@/lib/DynamicApp'
 import { SWRProvider } from '@/lib/SWRProvider'
 import '@/styles/globals.css'
 
@@ -12,9 +16,13 @@ const RootLayout: FC<PropsWithChildren> = (props) => {
   return (
     <html lang='zh-CN'>
       <body>
-        <AntdProvider>
-          <SWRProvider>{props.children}</SWRProvider>
-        </AntdProvider>
+        <AntdRegistry>
+          <AntdProvider>
+            <SWRProvider>
+              {withSuspense(<DynamicApp className='app'>{props.children}</DynamicApp>)}
+            </SWRProvider>
+          </AntdProvider>
+        </AntdRegistry>
       </body>
     </html>
   )
