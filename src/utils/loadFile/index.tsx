@@ -1,3 +1,5 @@
+'use client'
+
 let inputInstance: HTMLInputElement
 let lastRejectFn: ((reason?: any) => void) | undefined
 

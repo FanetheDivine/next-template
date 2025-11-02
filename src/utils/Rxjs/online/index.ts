@@ -1,13 +1,9 @@
+'use client'
+
 import { Observable, retry, share } from 'rxjs'
 
 /** 网络重连时触发流 */
-export const online$ = new Observable<void>((subscriber) => {
-  const handleOnline = () => {
-    subscriber.next()
-  }
-  window.addEventListener('online', handleOnline)
-  subscriber.add(() => window.removeEventListener('online', handleOnline))
-}).pipe(share())
+let online$: Observable<void>
 
 const getIsOfflineByNavigator = () => !navigator.onLine
 
@@ -24,6 +20,15 @@ const getIsOfflineByNavigator = () => !navigator.onLine
 export function retryWhenOffline<T>(
   getIsOffline: (e: unknown) => boolean = getIsOfflineByNavigator,
 ) {
+  if (!online$) {
+    online$ = new Observable<void>((subscriber) => {
+      const handleOnline = () => {
+        subscriber.next()
+      }
+      window.addEventListener('online', handleOnline)
+      subscriber.add(() => window.removeEventListener('online', handleOnline))
+    }).pipe(share())
+  }
   return retry<T>({
     delay: (e) => {
       if (getIsOffline(e)) return online$
