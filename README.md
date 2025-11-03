@@ -6,6 +6,7 @@
 - `zod` 类型校验工具
 - `daysjs` 日期时间处理工具
 - `swr` 管理网络请求
+- `next-intl` 国际化相关.详见[i18n.md](i18n.md)
 
 ## utils
 

@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
+    "build:export": "EXPORT=true next build",
     "build:analyze": "ANALYZE=true next build --webpack",
+    "build:export analyze": "EXPORT=true ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write src/"
@@ -16,6 +18,7 @@
     "@ant-design/nextjs-registry": "^1.2.0",
     "@next/bundle-analyzer": "^16.0.1",
     "@tailwindcss/postcss": "^4.1.16",
+    "@types/lodash-es": "^4.17.12",
     "ahooks": "^3.8.4",
     "antd": "^5.24.0",
     "axios": "^1.13.1",
@@ -24,6 +27,7 @@
     "immer": "^10.1.1",
     "lodash-es": "^4.17.21",
     "next": "^16.0.1",
+    "next-intl": "^4.4.0",
     "react": "^18",
     "react-dom": "^18",
     "react-error-boundary": "^6.0.0",

@@ -6,6 +6,8 @@
     "donjayamanne.githistory",
     "arturock.gitstash",
     "ritwickdey.LiveServer",
-    "formulahendry.code-runner"
+    "formulahendry.code-runner",
+    "Lokalise.i18n-ally",
+    "GitHub.vscode-pull-request-github"
   ]
 }

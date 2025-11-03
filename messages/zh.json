@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "title": "next项目模板"
+  },
+  "common": {
+    "pageError": "页面错误",
+    "retry": "重试",
+    "reloadPage": "刷新页面",
+    "toHomepage": "前往首页",
+    "goback": "返回上一页",
+    "page404": "页面不存在"
+  }
+}
