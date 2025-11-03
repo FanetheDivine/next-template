@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { hasLocale, Locale } from 'next-intl'
+import { hasLocale } from 'next-intl'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server'
 import dynamic from 'next/dynamic'
@@ -51,15 +51,15 @@ const RootLayout: FC<PropsWithChildren> = async (props) => {
   return (
     <html lang={locale}>
       <body>
-        <AntdRegistry>
-          <NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <AntdRegistry>
             <AntdProvider locale={locale}>
               <SWRProvider>
                 <DynamicApp className='app'>{children}</DynamicApp>
               </SWRProvider>
             </AntdProvider>
-          </NextIntlClientProvider>
-        </AntdRegistry>
+          </AntdRegistry>
+        </NextIntlClientProvider>
       </body>
     </html>
   )

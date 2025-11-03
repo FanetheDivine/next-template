@@ -21,6 +21,9 @@ export const AntdProvider: FC<PropsWithChildren & { locale: Locale }> = (props) 
     .with('zh', () => dayjs.locale('zh'))
     .with('en', () => dayjs.locale('en'))
     .exhaustive()
+  useEffect(() => {
+    import('@ant-design/v5-patch-for-react-19')
+  }, [])
   return (
     <StyleProvider layer>
       <ConfigProvider locale={antdLocale}>{props.children}</ConfigProvider>
