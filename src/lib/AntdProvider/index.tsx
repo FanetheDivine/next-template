@@ -17,12 +17,10 @@ export const AntdProvider: FC<PropsWithChildren & { locale: Locale }> = (props) 
     .with('zh', () => antd_zh_CN)
     .with('en', () => antd_en_US)
     .exhaustive()
-  useEffect(() => {
-    match(locale)
-      .with('zh', () => antd_zh_CN)
-      .with('en', () => antd_en_US)
-      .exhaustive()
-  }, [])
+  match(locale)
+    .with('zh', () => dayjs.locale('zh'))
+    .with('en', () => dayjs.locale('en'))
+    .exhaustive()
   return (
     <StyleProvider layer>
       <ConfigProvider locale={antdLocale}>{props.children}</ConfigProvider>
