@@ -9,6 +9,7 @@ import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { match } from 'ts-pattern'
 import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
 import { routing } from '@/i18n/routing'
+import { type LocaleParams } from '@/i18n/type'
 
 const AntdProvider = dynamic(() => import('@/lib/AntdProvider'), {
   loading: DefaultLoadingFallback,
@@ -16,17 +17,20 @@ const AntdProvider = dynamic(() => import('@/lib/AntdProvider'), {
 const SWRProvider = dynamic(() => import('@/lib/SWRProvider'), { loading: DefaultLoadingFallback })
 const DynamicApp = dynamic(() => import('antd/es/app'), { loading: DefaultLoadingFallback })
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations()
+export async function generateMetadata(props: LocaleParams): Promise<Metadata> {
+  // 为了适应打包为静态html的情况
+  const { params } = props
+  const { locale } = await params
+  const t = await getTranslations({ locale })
   return {
     title: t('metadata.title'),
   }
 }
+
 const RootLayout: FC<PropsWithChildren> = async (props) => {
   // 不能放在FC的类型里面 过不了检查
-  const { children, params } = props as PropsWithChildren & {
-    params: Promise<{ locale: Locale }>
-  }
+  const { children, params } = props as PropsWithChildren & LocaleParams
+
   const locale = await match(process.env.EXPORT === 'true')
     .with(true, async () => {
       // 静态html
