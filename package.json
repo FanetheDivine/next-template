@@ -16,6 +16,7 @@
     "@ant-design/cssinjs": "^1.24.0",
     "@ant-design/icons": "^5.4.0",
     "@ant-design/nextjs-registry": "^1.2.0",
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@next/bundle-analyzer": "^16.0.1",
     "@tailwindcss/postcss": "^4.1.16",
     "@types/lodash-es": "^4.17.12",
