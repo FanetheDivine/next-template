@@ -10,13 +10,13 @@ import { useRouter, Link } from '@/i18n/navigation'
 // /locale/页面的notfound
 
 const LocaleNotFound: FC = () => {
-  const tc = useTranslations('common')
+  const t = useTranslations()
   const router = useRouter()
   return (
     <Result
       className={AbsoluteCenter}
       status={'404'}
-      title={tc('page404')}
+      title={t('common.page404')}
       extra={[
         <Button
           key='goback'
@@ -24,10 +24,10 @@ const LocaleNotFound: FC = () => {
           icon={<RollbackOutlined />}
           onClick={() => router.back()}
         >
-          {tc('goback')}
+          {t('common.goback')}
         </Button>,
         <Link href='/' key='homepage'>
-          <Button icon={<HomeOutlined />}>{tc('toHomepage')}</Button>
+          <Button icon={<HomeOutlined />}>{t('common.toHomepage')}</Button>
         </Link>,
       ]}
     />

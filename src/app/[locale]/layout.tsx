@@ -9,7 +9,6 @@ import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { match } from 'ts-pattern'
 import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
 import { routing } from '@/i18n/routing'
-import '@/styles/globals.css'
 
 const AntdProvider = dynamic(() => import('@/lib/AntdProvider'), {
   loading: DefaultLoadingFallback,
@@ -23,17 +22,14 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t('metadata.title'),
   }
 }
-const RootLayout: FC<
-  PropsWithChildren & {
-    params: Promise<{ locale: Locale }>
-  }
-> = async (props) => {
-  const { children, params } = props
+const RootLayout: FC<PropsWithChildren> = async (props) => {
+  const { children } = props
 
   const locale = await match(process.env.EXPORT === 'true')
     .with(true, async () => {
       // 静态html
-      const { locale } = await params
+      const { locale } = (props as any).params
+      // console.log(params)
       return locale
     })
     .with(false, getLocale)
