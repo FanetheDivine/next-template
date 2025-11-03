@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { FC } from 'react'
 import { Result, Button } from 'antd'
 import { RollbackOutlined, HomeOutlined } from '@ant-design/icons'
