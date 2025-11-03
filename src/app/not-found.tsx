@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { Result, Button } from 'antd'
 import { RollbackOutlined, HomeOutlined } from '@ant-design/icons'
@@ -9,7 +8,6 @@ import { AbsoluteCenter } from '@/styles'
 import locale from '@/../messages/en.json'
 
 const GlobalNotFound: FC = () => {
-  const router = useRouter()
   return (
     <Result
       className={AbsoluteCenter}
@@ -20,13 +18,13 @@ const GlobalNotFound: FC = () => {
           key='goback'
           type='primary'
           icon={<RollbackOutlined />}
-          onClick={() => router.back()}
+          onClick={() => history.go(-1)}
         >
           {locale.common.goback}
         </Button>,
-        <Link href='/' key='homepage'>
+        <a href='/' key='homepage'>
           <Button icon={<HomeOutlined />}>{locale.common.goback}</Button>
-        </Link>,
+        </a>,
       ]}
     />
   )
