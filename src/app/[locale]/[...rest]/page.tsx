@@ -5,9 +5,11 @@ import { FC } from 'react'
 import { Result, Button } from 'antd'
 import { RollbackOutlined, HomeOutlined } from '@ant-design/icons'
 import { AbsoluteCenter } from '@/styles'
-import { useRouter } from '@/i18n/navigation'
+import { useRouter, Link } from '@/i18n/navigation'
 
-export const GlobalNotFound: FC = () => {
+// /locale/页面的notfound
+
+const LocaleNotFound: FC = () => {
   const tc = useTranslations('common')
   const router = useRouter()
   return (
@@ -24,12 +26,12 @@ export const GlobalNotFound: FC = () => {
         >
           {tc('goback')}
         </Button>,
-        <a href='/' key='homepage'>
+        <Link href='/' key='homepage'>
           <Button icon={<HomeOutlined />}>{tc('toHomepage')}</Button>
-        </a>,
+        </Link>,
       ]}
     />
   )
 }
 
-export default GlobalNotFound
+export default LocaleNotFound
