@@ -1,9 +1,11 @@
-import { getTranslations } from 'next-intl/server'
+'use client'
+
+import { useTranslations } from 'next-intl'
 import { FC } from 'react'
 import { Link } from '@/i18n/navigation'
 
-const Page: FC = async () => {
-  const t = await getTranslations()
+const Page: FC = () => {
+  const t = useTranslations()
   return (
     <Link href='/'>
       客户端组件
