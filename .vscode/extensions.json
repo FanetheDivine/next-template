@@ -7,6 +7,7 @@
     "arturock.gitstash",
     "ritwickdey.LiveServer",
     "formulahendry.code-runner",
-    "Lokalise.i18n-ally"
+    "Lokalise.i18n-ally",
+    "GitHub.vscode-pull-request-github"
   ]
 }
