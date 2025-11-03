@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { hasLocale } from 'next-intl'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, getTranslations } from 'next-intl/server'
+import { getLocale, getMessages, getTranslations } from 'next-intl/server'
 import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { FC, PropsWithChildren } from 'react'
@@ -16,34 +16,31 @@ const AntdProvider = dynamic(() => import('@/lib/AntdProvider'), {
 const SWRProvider = dynamic(() => import('@/lib/SWRProvider'), { loading: DefaultLoadingFallback })
 const DynamicApp = dynamic(() => import('antd/es/app'), { loading: DefaultLoadingFallback })
 
-export async function generateMetadata(props: ParamsWithLocale): Promise<Metadata> {
-  const { params } = props
-  const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'metadata' })
-
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations()
   return {
-    title: t('title'),
+    title: t('metadata.title'),
   }
 }
 
-const RootLayout: FC<PropsWithChildren & ParamsWithLocale> = async (props) => {
-  const { children, params } = props
-  const { locale } = await params
+const RootLayout: FC<PropsWithChildren> = async (props) => {
+  const { children } = props
+  const locale = await getLocale()
+  console.log(locale)
   if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
-  const messages = await getMessages({ locale })
   return (
     <html lang={locale}>
       <body>
         <AntdRegistry>
-          {/* <NextIntlClientProvider locale={locale} messages={messages}> */}
-          <AntdProvider>
-            <SWRProvider>
-              <DynamicApp className='app'>{children}</DynamicApp>
-            </SWRProvider>
-          </AntdProvider>
-          {/* </NextIntlClientProvider> */}
+          <NextIntlClientProvider>
+            <AntdProvider>
+              <SWRProvider>
+                <DynamicApp className='app'>{children}</DynamicApp>
+              </SWRProvider>
+            </AntdProvider>
+          </NextIntlClientProvider>
         </AntdRegistry>
       </body>
     </html>
