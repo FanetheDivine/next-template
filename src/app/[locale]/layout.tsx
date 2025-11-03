@@ -26,7 +26,6 @@ export async function generateMetadata(): Promise<Metadata> {
 const RootLayout: FC<PropsWithChildren> = async (props) => {
   const { children } = props
   const locale = await getLocale()
-  console.log(locale)
   if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
