@@ -23,13 +23,14 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 const RootLayout: FC<PropsWithChildren> = async (props) => {
-  const { children } = props
-
+  // 不能放在FC的类型里面 过不了检查
+  const { children, params } = props as PropsWithChildren & {
+    params: Promise<{ locale: Locale }>
+  }
   const locale = await match(process.env.EXPORT === 'true')
     .with(true, async () => {
       // 静态html
-      const { locale } = (props as any).params
-      // console.log(params)
+      const { locale } = await params
       return locale
     })
     .with(false, getLocale)
