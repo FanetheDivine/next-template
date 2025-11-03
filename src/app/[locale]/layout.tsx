@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
-import { hasLocale } from 'next-intl'
+import { hasLocale, Locale } from 'next-intl'
 import { NextIntlClientProvider } from 'next-intl'
-import { getLocale, getMessages, getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server'
 import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 import { FC, PropsWithChildren } from 'react'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
+import { match } from 'ts-pattern'
 import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
 import { routing } from '@/i18n/routing'
 import '@/styles/globals.css'
@@ -22,13 +23,30 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t('metadata.title'),
   }
 }
+const RootLayout: FC<
+  PropsWithChildren & {
+    params: Promise<{ locale: Locale }>
+  }
+> = async (props) => {
+  const { children, params } = props
 
-const RootLayout: FC<PropsWithChildren> = async (props) => {
-  const { children } = props
-  const locale = await getLocale()
+  const locale = await match(process.env.EXPORT === 'true')
+    .with(true, async () => {
+      // 静态html
+      const { locale } = await params
+      return locale
+    })
+    .with(false, getLocale)
+    .exhaustive()
+
   if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
+
+  if (process.env.EXPORT === 'true') {
+    setRequestLocale(locale)
+  }
+
   return (
     <html lang={locale}>
       <body>
