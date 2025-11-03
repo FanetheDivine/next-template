@@ -53,7 +53,7 @@ const RootLayout: FC<PropsWithChildren> = async (props) => {
       <body>
         <AntdRegistry>
           <NextIntlClientProvider>
-            <AntdProvider>
+            <AntdProvider locale={locale}>
               <SWRProvider>
                 <DynamicApp className='app'>{children}</DynamicApp>
               </SWRProvider>
