@@ -6,7 +6,6 @@ import { ConfigProvider } from 'antd'
 import antd_en_US from 'antd/es/locale/en_US'
 import antd_zh_CN from 'antd/es/locale/zh_CN'
 import { StyleProvider } from '@ant-design/cssinjs'
-import '@ant-design/v5-patch-for-react-19'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import { match } from 'ts-pattern'
@@ -22,6 +21,9 @@ export const AntdProvider: FC<PropsWithChildren & { locale: Locale }> = (props) 
     .with('zh', () => dayjs.locale('zh'))
     .with('en', () => dayjs.locale('en'))
     .exhaustive()
+  useEffect(() => {
+    import('@ant-design/v5-patch-for-react-19')
+  }, [])
   return (
     <StyleProvider layer>
       <ConfigProvider locale={antdLocale}>{props.children}</ConfigProvider>
