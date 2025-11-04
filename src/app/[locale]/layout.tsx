@@ -2,20 +2,14 @@ import type { Metadata } from 'next'
 import { hasLocale } from 'next-intl'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server'
-import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
-import { FC, PropsWithChildren } from 'react'
-import { AntdRegistry } from '@ant-design/nextjs-registry'
+import { FC, PropsWithChildren, Suspense } from 'react'
+import { App } from 'antd'
 import { match } from 'ts-pattern'
-import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
 import { routing } from '@/i18n/routing'
 import { type LocaleParams } from '@/i18n/type'
-
-const AntdProvider = dynamic(() => import('@/lib/AntdProvider'), {
-  loading: DefaultLoadingFallback,
-})
-const SWRProvider = dynamic(() => import('@/lib/SWRProvider'), { loading: DefaultLoadingFallback })
-const DynamicApp = dynamic(() => import('antd/es/app'), { loading: DefaultLoadingFallback })
+import AntdProvider from '@/lib/AntdProvider'
+import SWRProvider from '@/lib/SWRProvider'
 
 export async function generateMetadata(props: LocaleParams): Promise<Metadata> {
   // 为了适应打包为静态html的情况
@@ -52,13 +46,11 @@ const RootLayout: FC<PropsWithChildren> = async (props) => {
     <html lang={locale}>
       <body>
         <NextIntlClientProvider>
-          <AntdRegistry>
-            <AntdProvider locale={locale}>
-              <SWRProvider>
-                <DynamicApp className='app'>{children}</DynamicApp>
-              </SWRProvider>
-            </AntdProvider>
-          </AntdRegistry>
+          <AntdProvider locale={locale}>
+            <SWRProvider>
+              <App className='app'>{children}</App>
+            </SWRProvider>
+          </AntdProvider>
         </NextIntlClientProvider>
       </body>
     </html>

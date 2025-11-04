@@ -1,14 +1,13 @@
-'use client'
-
 import { Locale } from 'next-intl'
-import { FC, PropsWithChildren, useEffect } from 'react'
+import { FC, PropsWithChildren } from 'react'
 import { ConfigProvider } from 'antd'
 import antd_en_US from 'antd/es/locale/en_US'
 import antd_zh_CN from 'antd/es/locale/zh_CN'
-import { StyleProvider } from '@ant-design/cssinjs'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import { match } from 'ts-pattern'
+import { ClientAntdProvider } from './ClientAntdProvider'
 
 /** antd 首屏样式 样式兼容 本地化 主题等 */
 export const AntdProvider: FC<PropsWithChildren & { locale: Locale }> = (props) => {
@@ -21,13 +20,13 @@ export const AntdProvider: FC<PropsWithChildren & { locale: Locale }> = (props) 
     .with('zh', () => dayjs.locale('zh'))
     .with('en', () => dayjs.locale('en'))
     .exhaustive()
-  useEffect(() => {
-    import('@ant-design/v5-patch-for-react-19')
-  }, [])
+
   return (
-    <StyleProvider layer>
-      <ConfigProvider locale={antdLocale}>{props.children}</ConfigProvider>
-    </StyleProvider>
+    <AntdRegistry>
+      <ClientAntdProvider>
+        <ConfigProvider locale={antdLocale}>{props.children}</ConfigProvider>
+      </ClientAntdProvider>
+    </AntdRegistry>
   )
 }
 
