@@ -15,6 +15,7 @@ const Page: FC = async () => {
   console.log(ua)
   return (
     <>
+      {process.env.NEXT_PUBLIC_TEST}
       <ConfirmBtn />
       {JSON.stringify(ua)}
       <Link href='/test1' className={AbsoluteCenter}>
