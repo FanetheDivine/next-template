@@ -31,9 +31,13 @@ export function useComposition<StrictValue extends boolean>(
   const [value, onInnerChange] = useSemiControlledValue({
     value: valueController.value,
   })
-  // onChange时更新本地value
+  // 合成时更新本地value
   const onChange = useMemoizedFn<ChangeEventHandler<HTMLInputElement>>((e) => {
-    onInnerChange(e.target.value)
+    if (isComposing) {
+      onInnerChange(e.target.value)
+    } else {
+      valueController.onChange?.((e.target as HTMLInputElement).value)
+    }
   })
   const onCompositionStart = useMemoizedFn(() => {
     setComposing(true)
