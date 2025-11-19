@@ -19,7 +19,7 @@
 - `withSuspense` 为`ReactNode`或者一个组件包裹`Suspense`
 - `withErrorBoundary` 为`ReactNode`或者一个组件包裹`ErrorBoundary`
 - `Rxjs` 自定义rxjs运算符和流
-- `isMobile` 服务端判断设备类型
+- `/server` 仅在服务端可用的函数
 
 ## hooks
 
