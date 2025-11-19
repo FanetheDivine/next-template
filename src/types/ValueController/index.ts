@@ -6,14 +6,14 @@ declare module 'value-controller' {
     strictOnChange?: boolean
     /** 此项为false时onChange的参数可选 */
     strictOnChangeArg?: boolean
-    /** 此项为false时onChange不接受更新函数 */
+    /** 此项为true时onChange接受更新函数 */
     updater?: boolean
   }
 
   /**
    * 非函数类型的值`value`与其控制器`onChange`\
    * 可以在第二个类型参数处进行配置\
-   * 默认情况下 onChange的参数非可选 且可以接受更新函数
+   * 默认情况下 value/onChange均可选 onChange的参数非可选 onChange不接受更新函数
    */
   export type ValueController<V = any, Options extends ValueControllerOptions = object, R = void> =
     isFunction<V> extends true ? never : ValueObj<V, Options> & OnChangeObj<V, R, Options>
@@ -42,7 +42,7 @@ declare module 'value-controller' {
   export type OnChangeArg<
     V,
     Options extends ValueControllerOptions,
-  > = Options['updater'] extends false ? V : V | Updater<V, Options>
+  > = Options['updater'] extends true ? V | Updater<V, Options> : V
 
   export type Updater<
     V,
