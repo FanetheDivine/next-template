@@ -6,7 +6,6 @@ import {
   ErrorBoundaryPropsWithRender,
   FallbackProps,
 } from 'react-error-boundary'
-import { Result } from 'antd'
 import { DefaultErrorFallback } from '@/components/DefaultErrorFallback'
 import { isReactNode } from '../isReactNode'
 
