@@ -1,11 +1,13 @@
-import { ComponentType, forwardRef, ReactNode } from 'react'
+import { ComponentType, FC, forwardRef, ReactNode } from 'react'
 import {
   ErrorBoundary,
   ErrorBoundaryPropsWithComponent,
   ErrorBoundaryPropsWithFallback,
   ErrorBoundaryPropsWithRender,
+  FallbackProps,
 } from 'react-error-boundary'
 import { Result } from 'antd'
+import { DefaultErrorFallback } from '@/components/DefaultErrorFallback'
 import { isReactNode } from '../isReactNode'
 
 /** ErrorBoundary不包含children的props */
@@ -28,7 +30,7 @@ export function withErrorBoundary<T extends ComponentType<any>>(
 export function withErrorBoundary<T extends ComponentType<any>>(
   arg: ReactNode | T,
   errorBoundaryProps: ErrorBoundaryPropsWithoutChildren = {
-    fallback: <Result status='error' />,
+    FallbackComponent,
   },
 ) {
   if (isReactNode(arg)) {
@@ -45,4 +47,9 @@ export function withErrorBoundary<T extends ComponentType<any>>(
     })
     return CompWithErrorBoundary as unknown as T
   }
+}
+
+const FallbackComponent: FC<FallbackProps> = (props) => {
+  const { error, resetErrorBoundary } = props
+  return <DefaultErrorFallback error={error} reset={resetErrorBoundary} />
 }
