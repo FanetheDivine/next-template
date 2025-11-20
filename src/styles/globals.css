@@ -4,9 +4,9 @@
 
 @layer basic {
   * {
-
     &::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
     }
 
     &::-webkit-scrollbar-track {
@@ -22,6 +22,15 @@
   html,
   body,
   .app {
-    @apply overflow-hidden relative m-0 w-full h-full p-0;
+    @apply relative m-0 h-full w-full p-0;
+  }
+
+  html {
+    @apply overflow-auto;
+  }
+
+  body,
+  .app {
+    @apply min-h-150 min-w-100 overflow-hidden;
   }
 }
