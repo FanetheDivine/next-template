@@ -24,13 +24,13 @@
   .app {
     @apply relative m-0 h-full w-full p-0;
   }
+
   html {
-    @apply overflow-auto;
-    min-height: 667px;
-    min-width: 375px;
+    @apply min-w-80 overflow-auto;
   }
+
   body,
   .app {
-    @apply overflow-auto;
+    @apply overflow-hidden;
   }
 }
