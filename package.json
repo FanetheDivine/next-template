@@ -9,7 +9,6 @@
     "build:analyze": "ANALYZE=true next build --webpack",
     "build:export analyze": "EXPORT=true ANALYZE=true next build",
     "start": "next start",
-    "lint": "next lint",
     "prettier": "prettier --write src/"
   },
   "dependencies": {
@@ -43,11 +42,12 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@types/react": "^19.2.6",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.1",
     "postcss": "^8",
     "prettier": "3.6.2",

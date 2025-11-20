@@ -7,7 +7,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "README.md": "LICENSE,*.md",
-    "package.json": ".prettierrc,.gitignore,*.yaml,*.json,*.d.ts,*.config.ts,next.config.mjs,postcss.config.mjs"
+    "package.json": ".prettierrc,.gitignore,*.yaml,*.json,*.d.ts,*.config.ts,*.config.js,next.config.mjs,postcss.config.mjs"
   },
   "tailwindCSS.classAttributes": [
     "class",
@@ -27,6 +27,8 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "i18n-ally.localesPaths": ["messages"],
+  "i18n-ally.localesPaths": [
+    "messages"
+  ],
   "i18n-ally.keystyle": "nested"
 }
