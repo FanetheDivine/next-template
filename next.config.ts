@@ -4,6 +4,9 @@ import nextAnalyzer from '@next/bundle-analyzer'
 
 const nextConfig: NextConfig = {
   output: process.env.EXPORT === 'true' ? 'export' : undefined,
+  typescript: {
+    ignoreBuildErrors: process.env.DISABLE_TYPE_CHECK === 'true',
+  },
 }
 
 const withNextIntl = createNextIntlPlugin()
