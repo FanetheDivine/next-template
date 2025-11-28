@@ -1,0 +1,38 @@
+# 项目总览
+
+- **框架**：Next.js 16（App Router），TypeScript 严格模式。
+- **UI**：React 19 + Ant Design 5，Tailwind CSS 4 做样式，`@/styles` 放共享样式。
+- **国际化**：基于 next-intl，页面位于 `src/app/[locale]`，根下有 `app/page.tsx` 负责静态导出时的重定向。
+- **状态与数据**：Zustand 管全局状态，SWR 处理客户端数据，Axios 做 HTTP。
+- **工具链**：pnpm、ESLint 9（含 `@next/next/no-async-client-component`）、Prettier（含 sort-imports、tailwind 插件）、Tailwind 4 config (`tailwind.config.ts`)。
+- **路径别名**：`@/* -> src/*`，请优先使用别名。
+
+# 目录速览
+
+```
+src/
+├─ app/          # App Router（含 [locale]）
+├─ components/   # 通用组件
+├─ hooks/        # 自定义 hooks
+├─ i18n/         # next-intl 配置与导航封装
+├─ lib/          # 第三方封装
+├─ styles/       # 样式与常量
+├─ types/        # 类型声明
+└─ utils/        # 工具函数
+```
+
+# 常用脚本
+
+| 命令                 | 说明                            |
+| -------------------- | ------------------------------- |
+| `pnpm dev`           | 开发调试（`next dev --turbo`）  |
+| `pnpm build`         | 正常构建                        |
+| `pnpm build:export`  | `EXPORT=true` 静态导出          |
+| `pnpm build:analyze` | `ANALYZE=true` 开启 bundle 分析 |
+| `pnpm prettier`      | `prettier --write src/`         |
+
+> `next.config.ts` 会串联 next-intl 与 bundle analyzer，可通过环境变量控制导出/分析/类型检查。
+
+# 参考
+
+- 如需补充规范，允许联网查阅 Next.js、next-intl、Ant Design 等官方文档或权威资料，确保内容与最新版本保持一致。

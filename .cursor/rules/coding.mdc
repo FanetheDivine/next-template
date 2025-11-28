@@ -1,0 +1,79 @@
+# 代码与组件规范
+
+## TypeScript
+
+- `tsconfig.json` 已开启 `strict`、`noEmit`，请保持类型完整。
+- 避免 `any`；若必须使用，请注释原因。优先 `unknown` 或具体类型。
+- **优先使用 `type`** 来声明结构或工具类型；仅在需要声明合并/模块拓展时使用 `interface`。
+- 禁止使用 `enum`，请用联合字面量或对象常量。
+- 导出类型使用命名导出；局部类型就近声明。
+- `@/types/index.d.ts` 定义 `Style、isFunction、ActionType` 等全局辅助类型；`@/types/css.d.ts` 处理样式模块导入，新增类型请集中到 `@/types`。
+- `@/types/ValueController/index.ts` 声明同名自定义模块 `value-controller`，其中：
+  - `ValueController` 是一个泛型工具，用来描述 `{ value, onChange }` 控制器的多种变体，可通过 `strictValue` 控制 `value` 是否必填、`strictOnChange` 控制 `onChange` 是否必填、`strictOnChangeArg` 控制参数是否可选、`updater` 控制是否支持函数式更新。
+  - `ValueObj`、`OnChangeObj`、`OnChange`、`OnChangeArg`、`Updater` 等类型围绕这些开关派生具体形态，便于组件精准建模受控/半受控/非受控场景。
+  - 该模块完全自定义，不依赖第三方库，引用时 `import type { ValueController } from 'value-controller'`。
+
+## React / Next.js
+
+- App Router 页面使用默认导出（`page.tsx`、`layout.tsx` 等）。
+- 组件文件 PascalCase；hooks 使用 `useXxx` 命名。
+- Ant Design 组件按需导入（`import { Button } from 'antd'`），按需引入图标并避免一次性全量导入。
+- 服务器组件默认，只有依赖浏览器 API/状态/事件时才添加 `'use client'`。
+- 服务端数据：直接 `async` 函数组件 + `await`; 客户端数据：SWR。
+- 在 Server Component 中使用 `next-intl/server` 的 `getLocale`、`getTranslations`。
+
+## 运行时边界
+
+- **Server Components**：默认形态，可安全调用 `next-intl/server`、`@/utils/server`（内部依赖 `next/headers`）、数据库/文件系统。不要在其中引用仅客户端可用的库。
+- **Client Components**：必须以 `'use client'` 开头，禁止引入 `@/utils/server` 或任何使用 `next/headers`/`server-only` 的模块，以免打包失败。
+- **Server Actions**：在函数顶部声明 `'use server'`，仅作为服务端入口或表单 action 调用；内部可访问数据库或敏感 API，禁止在其中使用浏览器 API，也不要把 server action 传给客户端自定义 hooks。
+
+## 导入与路径
+
+1. React/Next 核心
+2. 第三方库（antd、lodash 等）
+3. 内部模块（`@/components` 等）
+4. 类型导入（使用 `import type`）
+5. 相对路径
+
+使用 `@/*` 别名而非 `../../`，组件/函数需与所在目录语义一致。
+
+## 样式
+
+- `@/styles/globals.css` 汇总 Tailwind、Ant Design reset 及项目自定义全局样式；`@/styles/index.ts` 导出如 `AbsoluteCenter` 这类常用 className 常量，可在组件中引用。
+- 优先 Tailwind 工具类；合并 `className` 时调用 `@/utils` 导出的 `cn`（`clsx + tailwind-merge` 包装）。
+- Tailwind 使用细则：
+  1. 简单样式（词数 ≤ 3，如 `m-0`、`max-h-full`）尽量使用 Tailwind；若组合过长，可按语义拆组（如布局类一组、边框类一组）并用 `cn` 拼接。
+  2. 凡是 CSS 属性值包含空格的样式（例如 `box-shadow`、`grid-column: span 1 / -1`）不使用 Tailwind，可放入 CSS Modules 以获得更好的提示。
+  3. 若组件只有极少数复杂样式（如单个 `grid-column: 1 / -1`），可用 `style` 内联；但 `grid-column: span 1 / -1`、`box-shadow` 等需写在 CSS 中。带空格的复杂样式原则上都放 CSS，只有可拆分为多个简单属性（如 padding 的 `pl-*`、`pr-*`）才可以继续使用 Tailwind。
+- 对于复杂视觉效果（自定义阴影、渐变背景、网格列、精细化修改 Antd 组件等），优先使用 CSS Modules 或内联 `style`，无需强行用 Tailwind。
+- 不使用 Sass/Less；全部样式以原生 CSS、CSS Modules 或 Tailwind 为主。
+
+## 工具函数与库
+
+- `@/utils/index` 汇总可在服务端/客户端公用的 helper：
+  - `cn`：使用 `clsx + tailwind-merge` 合并 `className`。
+  - `sleep`：基于 Promise 的延时，在示例页用于模拟异步。
+  - `withSuspense`：为任意组件或 ReactNode 添加 Suspense 边界。
+  - `withErrorBoundary`：基于 `react-error-boundary`，为组件或 ReactNode 增加错误边界。
+  - `loadFile`：在浏览器中以函数形式加载文件。
+  - `Rxjs/*`：导出 RxJS 相关辅助。
+  - `isReactNode`：判断某个值是否为有效的 ReactNode。
+- `@/utils/server` 专用于服务端（依赖 `next/headers`、`react` 的 `cache` 等），例如 `isMobile`，绝不能在 `'use client'` 组件中引用。
+- `@/lib` 下存放全局注入、一次性初始化或 layout 级别使用的封装（如主题、注册器、Provider 等）。正常业务页面/组件应调用 `@/utils` 或具体模块，避免滥用 `@/lib`。
+- 第三方交互和业务 API 调用请放在 `@/api` 下（未来可拓展为 `@/api/{feature}`），通过 Axios + Zod 或相应工具处理请求与类型校验。
+
+## Hooks
+
+- 所有自定义 hooks 位于 `@/hooks` 并在 `index.tsx` 聚合导出：
+  - `useImmediateEffect`：在依赖变更后同步执行 effect，适合与受控值同步。
+  - `useSemiControlledValue`：辅助实现受控/非受控双模态组件，与 `ValueController` 类型配套。
+  - `useComposition`：处理输入法组合事件（CompositionEvent）。
+- Hooks 命名以 `use` 开头并必须严格遵守 React Hooks 规则（只在顶层调用、只在 React 组件或其他 hooks 中调用、依赖列表完整）；若 hook 内部访问浏览器 API，调用方需在 Client Component 中使用。
+
+## 代码质量
+
+- 每次生成或更新代码后，立即执行 `pnpm prettier`（或触发等效格式化命令）确保格式一致。
+- 生成/修改代码完成后运行 `pnpm lint` 或至少执行 ESLint 检查，确保满足项目规范（尤其是 Hooks 依赖、Next.js 约束等）。
+- ESLint 强制 `@next/next/no-async-client-component`、`react-hooks/exhaustive-deps`。
+- 复杂逻辑添加注释；公共 API/组件 Props 提供 JSDoc 或类型注释。
