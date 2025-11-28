@@ -13,9 +13,9 @@ alwaysApply: true
 - 导出类型使用命名导出；局部类型就近声明。
 - `@/types/index.d.ts` 定义 `Style、isFunction、ActionType` 等全局辅助类型；`@/types/css.d.ts` 处理样式模块导入，新增类型请集中到 `@/types`。
   - `ActionType<ActionMap>`：将键值对映射转换为可辨识联合类型（discriminated union），适用于函数需要根据不同类型执行不同操作的场景。转换规则：
-    - 将 `{ a: number; b: undefined; c?: number }` 转换为 `{ type: 'a'; value: number } | { type: 'b' } | { type: 'c'; value?: number }`
+    - 将 `{ a: number; b: undefined; c?: number }` 转换为 `{ type: 'a'; value: number } | { type: 'b'; value?: undefined } | { type: 'c'; value?: number }`
     - 必填且非 `undefined` 的键：生成 `{ type: K; value: ActionMap[K] }`
-    - 值为 `undefined` 的键：生成 `{ type: K }`（无 `value` 字段）
+    - 值为 `undefined` 的键：生成 `{ type: K; value?: undefined }`（`value` 可选但类型为 `undefined`，实际使用时可忽略）
     - 可选键（`c?: number`）：生成 `{ type: K; value?: ActionMap[K] }`
     - 函数可通过 `action.type` 进行类型收窄，TypeScript 会自动推断对应的 `value` 类型
   - 使用示例：
@@ -23,19 +23,20 @@ alwaysApply: true
     ```typescript
     type MyActions = { increment: number; reset: undefined; setValue?: string }
     type Action = ActionType<MyActions>
-    // Action = { type: 'increment'; value: number } | { type: 'reset' } | { type: 'setValue'; value?: string }
+    // Action = { type: 'increment'; value: number } | { type: 'reset'; value?: undefined } | { type: 'setValue'; value?: string }
 
     function reducer(action: Action) {
       switch (action.type) {
         case 'increment':
           return count + action.value // value: number
         case 'reset':
-          return 0 // 无 value
+          return 0 // value?: undefined，实际使用时可忽略
         case 'setValue':
           return action.value ?? '' // value?: string
       }
     }
     ```
+
 - `@/types/ValueController/index.ts` 声明同名自定义模块 `value-controller`，其中：
   - `ValueController` 是一个泛型工具，用来描述 `{ value, onChange }` 控制器的多种变体，可通过 `strictValue` 控制 `value` 是否必填、`strictOnChange` 控制 `onChange` 是否必填、`strictOnChangeArg` 控制参数是否可选、`updater` 控制是否支持函数式更新。
   - `ValueObj`、`OnChangeObj`、`OnChange`、`OnChangeArg`、`Updater` 等类型围绕这些开关派生具体形态，便于组件精准建模受控/半受控/非受控场景。

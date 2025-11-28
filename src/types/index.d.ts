@@ -1,4 +1,4 @@
-export { }
+export {}
 
 declare global {
   /** className和style */
@@ -17,15 +17,13 @@ declare global {
    * ```
    * 转化为
    * ```ts
-   * type ActionType = { type: 'a'; value: number } | { type: 'b' } | { type: 'c'; value?: number }
+   * type ActionType = { type: 'a'; value: number } | { type: 'b', value?:undefined } | { type: 'c'; value?: number }
    * ```
    * 函数可以通过type判断应当执行什么操作
    */
   type ActionType<ActionMap> = {
     [K in keyof Required<ActionMap>]: { type: K } & (ActionMap[K] extends undefined
-      ? undefined extends ActionMap[K]
-      ? object
-      : { value?: ActionMap[K] }
+      ? { value?: ActionMap[K] }
       : { value: ActionMap[K] })
   }[keyof Required<ActionMap>]
 }
