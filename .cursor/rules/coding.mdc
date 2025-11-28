@@ -97,7 +97,7 @@ alwaysApply: true
 - 所有自定义 hooks 位于 `@/hooks` 并在 `index.tsx` 聚合导出：
   - `useImmediateEffect`：在依赖变更后同步执行 effect，适合与受控值同步。
   - `useSemiControlledValue`：辅助实现受控/非受控双模态组件，与 `ValueController` 类型配套。
-  - `useComposition`：处理输入法组合事件（CompositionEvent）。
+  - `useComposition`：处理输入法组合事件（CompositionEvent），确保输入法合成期间不触发 onChange。如需防抖，只需将传入的 `onChange` 包装为防抖函数（如使用 `ahooks` 的 `useDebounceFn`）即可，hook 会自动处理合成与防抖的协调。
 - Hooks 命名以 `use` 开头并必须严格遵守 React Hooks 规则（只在顶层调用、只在 React 组件或其他 hooks 中调用、依赖列表完整）；若 hook 内部访问浏览器 API，调用方需在 Client Component 中使用。
 
 ## 代码质量

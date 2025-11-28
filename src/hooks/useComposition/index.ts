@@ -16,12 +16,21 @@ export type CompositionProps<Options extends ValueControllerOptions = object> = 
  * 处理输入法合成问题
  * @returns 返回一个是否正在合成的state,以及由input使用的合成props
  * @example
- * ```js
- * // search是合成后的值
- * const [search, setSearch] = useState()
- * const {compositionProps} = useComposition({ value:search, onChange: setSearch })
+ * ```tsx
+ * // 基础用法：search是合成后的值
+ * const [search, setSearch] = useState<string>()
+ * const { compositionProps } = useComposition({ value: search, onChange: setSearch })
+ * <Input {...compositionProps} />
+ * ```
+ * @example
+ * ```tsx
+ * // 带防抖：只需要将 onChange 包装为防抖函数即可
+ * import { useDebounceFn } from 'ahooks'
  *
- * <Input {...compositionProps}/>
+ * const [search, setSearch] = useState<string>()
+ * const { run: debouncedSetSearch } = useDebounceFn(setSearch, { wait: 300 })
+ * const { compositionProps } = useComposition({ value: search, onChange: debouncedSetSearch })
+ * <Input {...compositionProps} />
  * ```
  */
 export function useComposition<StrictValue extends boolean>(
@@ -33,9 +42,8 @@ export function useComposition<StrictValue extends boolean>(
   })
   // 合成时更新本地value
   const onChange = useMemoizedFn<ChangeEventHandler<HTMLInputElement>>((e) => {
-    if (isComposing) {
-      onInnerChange(e.target.value)
-    } else {
+    onInnerChange(e.target.value)
+    if (!isComposing) {
       valueController.onChange?.((e.target as HTMLInputElement).value)
     }
   })
