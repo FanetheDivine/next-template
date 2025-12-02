@@ -7,7 +7,7 @@ import { isMobile } from '@/utils/server'
 import { sleep } from '@/utils/sleep'
 import { ConfirmBtn } from './client-components/ConfirmBtn'
 
-const Page: FC = async () => {
+const Page: FC<PageProps<'/[locale]'>> = async (props) => {
   await sleep(2000)
   const locale = await getLocale()
   const t = await getTranslations()
