@@ -158,6 +158,24 @@ Next.js 16 提供的全局类型工具，用于类型化页面组件、布局组
 
 `PageProps` 自带了查询参数 `searchParams`，其类型是`Promise<Record<string, string | string[] | undefined>>`
 
+**使用规范**：
+
+生成代码时， `params` 和 `searchParams` 不应从 `props` 解构得到，而要始终为其单独定义和赋值
+
+```ts
+import { toURLSearchParams } from '@/utils'
+
+const Page: FC<PageProps<'/example'>> = async (props) => {
+  const params = await props.params
+  // 转化为可用的URLSearchParams类型
+  const searchParams = toURLSearchParams(await props.searchParams)
+  const query = searchParams.get('query')
+  return null
+}
+```
+
+`generateMetadata` 中的 `PageProps` 参数也遵循这个规则
+
 #### LayoutProps<Route>
 
 专供布局组件（`layout.tsx`）的默认导出使用，使用 `FC<LayoutProps<Route>>` 形式。`LayoutProps` 自带了以下内容：
@@ -166,14 +184,18 @@ Next.js 16 提供的全局类型工具，用于类型化页面组件、布局组
 - **params**：动态路由参数，为 Promise，需要使用 `await` 访问
 - **注意**：Layout 组件无法接收 `searchParams`，如需查询参数应在页面组件中处理
 
-使用示例：
+**使用规范**：
+
+生成代码时， `params` 不应从 `props` 解构得到，而要始终为其单独定义和赋值，而其他参数应当从 `props` 解构
 
 ```ts
 import type { FC } from 'react'
 
 const Layout: FC<LayoutProps<'/[locale]'>> = async (props) => {
-  const { children, params } = props
-  const { locale } = await params
+  const { children } = props
+  const params = await props.params
+  const { locale } = params
+
   return <div lang={locale}>{children}</div>
 }
 
@@ -184,16 +206,19 @@ export default Layout
 
 用于类型化路由处理程序（Route Handlers，`route.ts`）中的 `context` 参数，包含 `params`（动态路由参数），为 Promise，需要使用 `await` 访问。**不包含查询参数**，如需使用查询参数，应从 `NextRequest` 的 `nextUrl.searchParams` 获取。
 
-使用示例：
+**使用规范**：
+
+生成代码时， `params` 不应从 `ctx` 解构得到，而要始终为其单独定义和赋值。
+
+总是单独定义 `searchParams` 并赋值。
 
 ```ts
 import { type NextRequest, NextResponse } from 'next/server'
 
-export async function GET(req: NextRequest, ctx: RouteContext<'/api/example/[id]'>) {
-  const { id } = await ctx.params
+export async function GET(req: NextRequest, ctx: RouteContext<'/api/example'>) {
   const searchParams = req.nextUrl.searchParams
   const query = searchParams.get('query')
-  return NextResponse.json({ id, query })
+  return NextResponse.json({ query })
 }
 ```
 
