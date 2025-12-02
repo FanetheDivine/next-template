@@ -7,12 +7,14 @@
  * ```ts
  * const Page: FC<PageProps<'/example'>> = async (props) => {
  *   const searchParams = toURLSearchParams(await props.searchParams)
- *   const query = urlSearchParams.get('query')
+ *   const query = searchParams.get('query')
  *   // ...
  * }
  * ```
  */
-export function toURLSearchParams<P extends PageProps<any>>(searchParams: P['searchParams']) {
+export function toURLSearchParams(
+  searchParams: Record<string, string | string[] | undefined>,
+): URLSearchParams {
   const urlSearchParams = new URLSearchParams()
   Object.entries(searchParams).forEach(([key, value]) => {
     if (value === undefined) {
