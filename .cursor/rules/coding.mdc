@@ -6,7 +6,7 @@ alwaysApply: true
 
 ## 项目规范
 
-项目的依赖、全局类型、全局hooks等参考同文件夹的 `project.md`.
+项目的依赖、全局类型、全局hooks等参考同文件夹的 `project.mdc`.
 
 尽可能引用已有的代码而不是写新的。
 
