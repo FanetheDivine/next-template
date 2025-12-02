@@ -5,6 +5,8 @@ import { useMemoizedFn } from 'ahooks'
 import type { ValueController, ValueControllerOptions, OnChange, ValueObj } from 'value-controller'
 import { useImmediateEffect } from '../useImmediateEffect'
 
+/* eslint-disable react-hooks/refs */
+
 /**
  * 根据原始值生成一个半受控的新值.原始值的改变会同时新值;也可以单独更改新值\
  * 原始值的改变优先级较高

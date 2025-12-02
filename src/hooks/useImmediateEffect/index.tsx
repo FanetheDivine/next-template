@@ -2,6 +2,8 @@
 
 import { useRef } from 'react'
 
+/* eslint-disable react-hooks/refs */
+
 /** ImmediateEffect的副作用函数 接受旧的依赖项 可选择返回一个清理函数 */
 export type ImmediateEffect<Deps extends any[]> = (oldDeps?: Deps) => ImmediateEffectCleanup
 /** ImmediateEffect的清理函数 */
@@ -32,8 +34,8 @@ export type ImmediateEffectCleanup = (() => any) | undefined | void
  * ```
  */
 export function useImmediateEffect<Deps extends any[]>(effect: ImmediateEffect<Deps>, deps: Deps) {
-  const prevDepsRef = useRef<Deps>()
-  const prevCleanupRef = useRef<ImmediateEffectCleanup>()
+  const prevDepsRef = useRef<Deps | undefined>(undefined)
+  const prevCleanupRef = useRef<ImmediateEffectCleanup | undefined>(undefined)
   if (isDepsChanged(prevDepsRef.current, deps)) {
     prevCleanupRef.current?.()
     prevCleanupRef.current = effect(prevDepsRef.current)
