@@ -156,7 +156,7 @@ Next.js 16 提供的全局类型工具，用于类型化页面组件、布局组
 
 用于类型化页面组件（`page.tsx`）的默认导出服务端组件，以及 `generateMetadata` 函数的参数。包含 `params`（动态路由参数），为 Promise，需要使用 `await` 访问。
 
-如需使用查询参数，需手动添加 `searchParams` 类型。`searchParams`的通用类型是`Promise<Record<string,string|string[]|undefined>>`,但也可以由开发者指定具体的类型，例如`Promise<{id?:string}>`
+`PageProps` 自带了查询参数 `searchParams`，其类型是`Promise<Record<string, string | string[] | undefined>>`
 
 #### LayoutProps<Route>
 
