@@ -3,7 +3,7 @@ import { hasLocale } from 'next-intl'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-import { FC, PropsWithChildren } from 'react'
+import type { FC } from 'react'
 import { App } from 'antd'
 import { match } from 'ts-pattern'
 import { routing } from '@/i18n/routing'
@@ -23,7 +23,7 @@ export async function generateMetadata(props: PageProps<'/[locale]'>): Promise<M
   }
 }
 
-const RootLayout: FC<PropsWithChildren & PageProps<'/[locale]'>> = async (props) => {
+const RootLayout: FC<LayoutProps<'/[locale]'>> = async (props) => {
   const { children, params } = props
 
   const locale = await match(process.env.EXPORT === 'true')
