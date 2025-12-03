@@ -47,13 +47,10 @@ src/
 
 - `Style`：样式相关的 props（如 `className`、`style` 等），用于组件 Props 类型定义。
 - `isFunction`：判断是否为函数的类型守卫。
-- `ActionType<ActionMap>`：将键值对映射转换为可辨识联合类型（discriminated union），适用于函数需要根据不同类型执行不同操作的场景。
-  - 转换规则：
-    - 将 `{ a: number; b: undefined; c?: number }` 转换为 `{ type: 'a'; value: number } | { type: 'b'; value?: undefined } | { type: 'c'; value?: number }`
-    - 必填且非 `undefined` 的键：生成 `{ type: K; value: ActionMap[K] }`
-    - 值为 `undefined` 的键：生成 `{ type: K; value?: undefined }`（`value` 可选但类型为 `undefined`，实际使用时可忽略）
-    - 可选键（`c?: number`）：生成 `{ type: K; value?: ActionMap[K] }`
-    - 函数可通过 `action.type` 进行类型收窄，TypeScript 会自动推断对应的 `value` 类型
+- `ActionType<ActionMap>`：将键值对映射转换为可辨识联合类型（discriminated union），适用于**一个函数接受不同类型的参数并执行多种响应操作的场景**。
+  - 转换规则：- 将 `{ a: number; b: undefined; c?: number }` 转换为 `{ type: 'a'; value: number } | { type: 'b'; value?: undefined } | { type: 'c'; value?: number }` - 必填且非 `undefined` 的键：生成 `{ type: K; value: ActionMap[K] }` - 值为 `undefined` 的键：生成 `{ type: K; value?: undefined }`（`value` 可选但类型为 `undefined`，实际使用时可忽略）- 可选键（`c?: number`）：生成 `{ type: K; value?: ActionMap[K] }` - 函数可通过 `action.type` 进行类型收窄，TypeScript 会自动推断对应的 `value` 类型
+
+**注意**：以上类型都是全局存在的，直接使用即可，不应该也不能从`@/types`导入。
 
 ## @/types/css.d.ts
 

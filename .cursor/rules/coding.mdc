@@ -59,7 +59,7 @@ alwaysApply: true
 
 - 组件文件 PascalCase；hooks 使用 `useXxx` 命名。
 - **React 组件类型**：组件必须使用 `const XX: FC<XXProps> = props => { const { xx } = props }` 的形式。**组件 Props 类型必须和组件名称后缀`Props`**，例如 `Container` 组件对应 `ContainerProps`。Props 类型可以导出，格式为 `export type XXProps = Style & PropsWithChildren & { ... }`，其中 `Style` 和 `PropsWithChildren` 按需要添加。
-  - `Style` 是全局类型（定义在 `@/types/index.d.ts`），用于提供样式相关的 props（如 `className`、`style` 等），应多使用。
+  - `Style` 是**全局类型**（定义在 `@/types/index.d.ts`），用于提供样式相关的 props（如 `className`、`style` 等），应多使用。
   - `PropsWithChildren` 用于处理需要 `children` 的组件。
   - 组件体内结构 `props`, `children` 在最前面,最后两个参数为`className`和`style`
   - 使用示例：
@@ -68,6 +68,7 @@ alwaysApply: true
     import type { FC, PropsWithChildren } from 'react';
 
     // 全量示例（包含 Style 和 PropsWithChildren）
+    // Style是全局类型 不能导入
     export type ContainerProps = Style & PropsWithChildren & {
       title?: string;
     };
@@ -242,6 +243,6 @@ export async function GET(req: NextRequest, ctx: RouteContext<'/api/example'>) {
 
 ## 类型使用规范
 
-- 使用 `Style` 类型时，在组件 Props 类型中通过交叉类型引入：`export type XXProps = Style & { ... }`。
-- 使用 `ActionType<ActionMap>` 时，定义 action 映射类型，然后通过 `ActionType` 转换为可辨识联合类型，在 reducer 等函数中使用 `action.type` 进行类型收窄。
+- 使用 `Style` 类型时，在组件 Props 类型中通过交叉类型引入：`export type XXProps = Style & { ... }`。**注意**：`Style` 是全局类型（定义在 `@/types/index.d.ts`），**不需要导入**，直接使用即可。
+- 使用 `ActionType<ActionMap>` 时，定义 action 映射类型，然后通过 `ActionType` 转换为可辨识联合类型，在 reducer 等函数中使用 `action.type` 进行类型收窄。`ActionType` 也是全局类型，不需要导入。
 - 使用 `ValueController` 类型时，通过 `import type { ValueController } from 'value-controller'` 导入，根据组件需求配置 `strictValue`、`strictOnChange` 等参数。
