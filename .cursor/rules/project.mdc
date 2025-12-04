@@ -5,7 +5,7 @@ alwaysApply: true
 # 项目总览
 
 - **框架**：Next.js 16（App Router），TypeScript 严格模式。
-- **UI**：React 19 + Ant Design 5，Tailwind CSS 4 做样式，`@/styles` 放共享样式。
+- **UI**：React 19 + Ant Design 6，Tailwind CSS 4 做样式，`@/styles` 放共享样式。
 - **国际化**：基于 next-intl，页面位于 `src/app/[locale]`，根下有 `app/page.tsx` 负责静态导出时的重定向。
 - **状态与数据**：Zustand 管全局状态，SWR 处理客户端数据，Axios 做 HTTP，Zod 做数据验证和类型推断。
 - **工具链**：pnpm、ESLint 9（含 `@next/next/no-async-client-component`）、Prettier（含 sort-imports、tailwind 插件）、Tailwind 4 config (`tailwind.config.ts`)。
