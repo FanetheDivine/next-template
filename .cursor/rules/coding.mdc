@@ -32,6 +32,8 @@ alwaysApply: true
 
 使用 `@/*` 别名而非 `../../`，组件/函数需与所在目录语义一致。
 
+- **按需导入**：所有第三方库都应尽可能使用按需导入，避免全量导入以减少打包体积。例如 `import { Button } from 'antd'` 而非 `import * as antd from 'antd'`。
+
 ### 函数声明与导出
 
 - **函数类型声明**：如果函数有明确的类型，使用 `const fn: FN = xxx;` 形式；否则使用 `function` 声明。
@@ -116,12 +118,9 @@ alwaysApply: true
 
 ### Context
 
+- **仅限客户端组件**：React Context 仅限在客户端组件（Client Components）中使用，服务端组件（Server Components）一般不使用 Context。如果服务端组件必须使用 Context，需要使用 Server Context（如 `next-intl` 提供的服务端 Context）。
 - React Context 的创建（`createContext`）应当放在一个独立的文件中，避免在组件文件内创建 Context，以防止热重载时 Context 被刷新导致状态丢失。
 - Context Provider 组件可以放在同一文件或单独文件中，但 Context 对象本身必须独立导出。
-
-### Ant Design
-
-- Ant Design 组件按需导入（`import { Button } from 'antd'`），按需引入图标并避免一次性全量导入。
 
 ## Next.js 规范
 
