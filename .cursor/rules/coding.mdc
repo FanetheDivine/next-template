@@ -4,13 +4,23 @@ alwaysApply: true
 
 # 编码规范
 
-## 项目规范
+分为以下三个部分：
 
-项目的依赖、全局类型、全局hooks等参考同文件夹的 `project.mdc`.
+- `常规规范` 框架无关的规范
+- `React 规范` React 相关的规范
+- `Next.js 规范` Next.js 相关的规范
 
-尽可能引用已有的代码而不是写新的。
+优先级从低到高，后面的规则会覆盖和补充前面的规则。
+
+---
 
 ## 常规规范
+
+### 代码复用
+
+项目的依赖、全局类型、全局 hooks 等参考同文件夹的 `project.mdc`。
+
+尽可能引用已有的代码而不是写新的。
 
 ### TypeScript
 
@@ -20,172 +30,120 @@ alwaysApply: true
 - 禁止使用 `enum`，请用联合字面量或对象常量。
 - 导出类型使用命名导出；局部类型就近声明。
 
-### 导入与路径
+### 资源导入
 
-导入顺序：
+- `@/*` 是 `src/*` 的别名，在 `src/` 下的文件应当使用这一别名。
+- 同一导入的相对路径和绝对路径，选择较短者。
+- 尽可能使用按需导入。
+- 生成代码时，导入顺序如下：
+  1. React 相关库
+  2. Next.js 相关库
+  3. 第三方库（`antd`、`lodash` 等）
+  4. 内部模块（`@/components` 等）
+  5. 相对路径
 
-1. React/Next 核心
-2. 第三方库（antd、lodash 等）
-3. 内部模块（`@/components` 等）
-4. 类型导入（使用 `import type`）
-5. 相对路径
-
-使用 `@/*` 别名而非 `../../`，组件/函数需与所在目录语义一致。
-
-- **按需导入**：所有第三方库都应尽可能使用按需导入，避免全量导入以减少打包体积。例如 `import { Button } from 'antd'` 而非 `import * as antd from 'antd'`。
-
-### 函数声明与导出
+### 资源定义和导出
 
 - **函数类型声明**：如果函数有明确的类型，使用 `const fn: FN = xxx;` 形式；否则使用 `function` 声明。
-- **导出规范**：尽可能使用命名导出，即 `export const` 或 `export function`。仅当 `page.tsx`、`layout.tsx`、`route.ts` 等 Next.js 特殊文件时使用默认导出。
+- **导出规范**：尽可能使用命名导出，即 `export const` 或 `export function`。
 - **默认导出**：使用默认导出时，`export default` 和值的定义必须分开，不能写成合并。
 
 ### 代码质量
 
-- 每次生成或更新代码后，立即执行 `pnpm prettier`（或触发等效格式化命令）确保格式一致。
-- 生成/修改代码完成后运行执行 ESLint 检查，确保满足项目规范（尤其是 Hooks 依赖、Next.js 约束等）。
-- ESLint 强制 `@next/next/no-async-client-component`、`react-hooks/exhaustive-deps`。
-- 复杂逻辑添加注释；公共 API/组件 Props 提供 JSDoc 或类型注释。
-- **变量未使用警告**：代码生成时忽略变量未使用的 ESLint 警告，不要为这些变量添加 `_` 前缀。如果变量是函数签名必需的（如 `generateMetadata` 的参数、组件 Props 等），即使未使用也应保持原样，无需添加前缀或注释。
+- 复杂逻辑添加注释；公共 API/组件 `Props` 提供 JSDoc 或类型注释。
+- 每次生成或更新代码后，对于创建或修改的文件，使用 `prettier` 将其格式化，并执行 ESLint 检查。注意，使用 `npx` 执行命令，利用项目内下载好的包和已定义的规则。
+- 忽略变量/类型未使用的 ESLint 警告，不要将其删除，也不要添加注释或 `_` 前缀。
 
-### 数据验证与类型推断
-
-- **使用 Zod 进行数据验证**：在 Server Actions 和 Route Handlers 中，使用 Zod Schema 验证输入数据，确保数据安全性和类型正确性。
-- **类型推断**：通过 `z.infer<typeof schema>` 从 Zod Schema 推断 TypeScript 类型，避免手动维护类型定义，保持运行时验证与编译时类型的一致性。
-- **Server Actions 中的使用**：在 Server Actions 中使用 Zod 验证函数参数，使用 `schema.parse()` 或 `schema.safeParse()` 进行验证。
-- **Route Handlers 中的使用**：在 Route Handlers 中使用 Zod 验证请求体、查询参数等，确保数据格式正确后再处理。
-- **错误处理**：使用 `safeParse()` 进行验证时，妥善处理验证失败的情况，返回清晰的错误信息。
+---
 
 ## React 规范
 
-### 组件类型
+### 组件定义
 
-- 组件文件 PascalCase；hooks 使用 `useXxx` 命名。
-- **React 组件类型**：组件必须使用 `const XX: FC<XXProps> = props => { const { xx } = props }` 的形式。**组件 Props 类型必须和组件名称后缀`Props`**，例如 `Container` 组件对应 `ContainerProps`。Props 类型可以导出，格式为 `export type XXProps = Style & PropsWithChildren & { ... }`，其中 `Style` 和 `PropsWithChildren` 按需要添加。
-  - `Style` 是**全局类型**（定义在 `@/types/index.d.ts`），用于提供样式相关的 props（如 `className`、`style` 等），应多使用。
-  - `PropsWithChildren` 用于处理需要 `children` 的组件。
-  - 组件体内结构 `props`, `children` 在最前面,最后两个参数为`className`和`style`
-  - 使用示例：
+- 组件必须使用 `const XX: FC<XXProps> = props => { XX }` 的形式。
+- 组件参数使用 `type` 定义，其名称应当是组件名称后缀 `Props`，是否导出也和组件保持一致。
+- `Style` 是**全局类型**，定义在 `@/types/index.d.ts`，用于提供与原生相同的 `className` 和 `style` 类型。如果需要接受外部样式，使用这个类型。
+- `PropsWithChildren` 用于处理需要 `children` 的组件。
+- 组件体内结构：`props`、`children` 在最前面，最后两个参数为 `className` 和 `style`。
 
-    ```typescript
-    import type { FC, PropsWithChildren } from 'react';
+```typescript
+import type { FC, PropsWithChildren } from 'react';
 
-    // 全量示例（包含 Style 和 PropsWithChildren）
-    // Style是全局类型 不能导入
-    export type ContainerProps = Style & PropsWithChildren & {
-      title?: string;
-    };
+// 全量示例（包含 Style 和 PropsWithChildren）
+// Style 是全局类型，不能导入
+export type ContainerProps = Style & PropsWithChildren & {
+  title?: string;
+};
 
-    export const Container: FC<ContainerProps> = (props) => {
-      const { children, title, className, style } = props;
-      return (
-        <div className={className} style={style}>
-          {title && <h2>{title}</h2>}
-          {children}
-        </div>
-      );
-    };
-    ```
+export const Container: FC<ContainerProps> = (props) => {
+  const { children, title, className, style } = props;
+  return (
+    <div className={className} style={style}>
+      {title && <h2>{title}</h2>}
+      {children}
+    </div>
+  );
+};
+```
 
-### Hooks 规则
+如果组件语义上需要 `value-onChange` 的参数，考虑使用 `ValueController`。通过 `import type { ValueController } from 'value-controller'` 导入，按需求配置 `strictValue`、`strictOnChange` 等参数，可以调整 `value`、`onChange` 的类型，`onChange` 的参数类型。
+
+### 关于 Hooks
 
 - Hooks 命名以 `use` 开头并必须严格遵守 React Hooks 规则（只在顶层调用、只在 React 组件或其他 hooks 中调用、依赖列表完整）。
-- 若 hook 内部访问浏览器 API，调用方需在 Client Component 中使用。
 - 使用项目自定义 hooks（`@/hooks`）时，请参考 `project.mdc` 中的 hooks 介绍，了解各 hook 的用途和适用场景。
 
 ### 事件处理函数
 
-- **优先内联**：简单的事件处理函数优先内联编写，例如 `onClick={() => handleAction()}`。
-- **复杂逻辑独立**：如果事件处理函数相对复杂，再独立写在外面，使用 `useMemoizedFn`（来自 `ahooks`）包裹以优化性能。
-- **命名规范**：组件较多的情况下，事件处理函数名字要写全，不能只是一个简单的 `handleClick`，应该使用更具描述性的名称，例如 `handleUserFormSubmit`、`handleProductDeleteConfirm`。
-- **文档注释**：独立的事件处理函数必须添加 TSDoc 注释，描述其作用和限制，例如：
+简单的事件处理函数**优先内联编写**，例如 `onClick={() => { /* 执行操作 */ }}`。
 
-  ```typescript
-  /**
-   * 处理用户表单提交
-   * @param e - 表单提交事件
-   * @remarks 提交前会进行表单验证，验证失败不会触发提交
-   */
-  const handleUserFormSubmit = useMemoizedFn((e: React.FormEvent<HTMLFormElement>) => {
-    // 处理逻辑
-  })
-  ```
+如果事件处理函数相对复杂，应当独立写在组件的函数体中，使用 `useMemoizedFn`（来自 `ahooks`）包裹。这种情况下，其名称应当依据功能和语义而定，例如 `submitUserForm`、`deleteHistoryItem`，不能命名为 `handleClick` 或 `onClick`。此外，还应为其添加 TSDoc 注释，描述其作用和限制。
 
 ### 数据请求
 
 - **数据获取型请求**：对于数据获取型的网络请求，优先使用 `useSWR`，开启 `suspense` 模式，使用 `withSuspense` 和 `withErrorBoundary`（来自 `@/utils`）包裹组件，确保加载和错误状态的统一处理。
-- **提交型请求**：对于"提交"这类场景（触发型的网络请求），使用 `useRequest`（来自 `ahooks`）。提交中按钮进入 `loading` 状态。如果处于弹窗中，提交中时弹窗不能关闭。`antd`的弹窗，注意蒙层、esc键、closable属性都应当禁止关闭，取消按钮应设置为 `disabled`。
+- **提交型请求**：对于"提交"这类场景（触发型的网络请求），使用 `useRequest`（来自 `ahooks`）。提交中按钮进入 `loading` 状态。如果按钮处于弹窗/抽屉等语义独立的部分中，提交过程中这些部分必须持续存在。以 Ant Design 弹窗为例，提交过程中，点击蒙层、按下 `Esc` 键都不能关闭，`closable` 设置为 `true`，取消按钮应设置为 `disabled`。
 
 ### Context
 
-- **仅限客户端组件**：React Context 仅限在客户端组件（Client Components）中使用，服务端组件（Server Components）一般不使用 Context。如果服务端组件必须使用 Context，需要使用 Server Context（如 `next-intl` 提供的服务端 Context）。
 - React Context 的创建（`createContext`）应当放在一个独立的文件中，避免在组件文件内创建 Context，以防止热重载时 Context 被刷新导致状态丢失。
 - Context Provider 组件可以放在同一文件或单独文件中，但 Context 对象本身必须独立导出。
 
+### 组件样式
+
+- 优先 Tailwind 工具类；合并 `className` 时调用 `@/utils` 导出的 `cn`（`clsx` + `tailwind-merge` 包装）。
+- Tailwind 使用细则：
+  1. 简单样式（词数 ≤ 3，如 `m-0`、`max-h-full`）尽量使用 Tailwind；若组合过长，可按语义拆组（如布局类一组、边框类一组）并用 `cn` 拼接。
+  2. 凡是 CSS 属性值包含空格的样式（例如 `box-shadow`、`grid-column: span 1 / -1`）不使用 Tailwind，可放入 CSS Modules 以获得更好的提示。
+  3. 若组件只有极少数复杂样式（如单个 `grid-column: 1 / -1`），可用 `style` 内联；但 `grid-column: span 1 / -1`、`box-shadow` 等需写在 CSS 中。带空格的复杂样式原则上都放 CSS，只有可拆分为多个简单属性（如 `padding` 的 `pl-*`、`pr-*`）才可以继续使用 Tailwind。
+- 对于复杂视觉效果（自定义阴影、渐变背景、网格列、精细化修改 Ant Design 组件等），优先使用 CSS Modules 或内联 `style`，无需强行使用 Tailwind。
+- 使用 `@/styles/index.ts` 导出的常用 `className` 常量（如 `AbsoluteCenter`）时，直接导入使用即可。
+
 ## Next.js 规范
-
-### App Router
-
-- App Router 页面使用默认导出（`page.tsx`、`layout.tsx` 等）。
-- 服务器组件默认，只有依赖浏览器 API/状态/事件时才添加 `'use client'`。
-- 服务端数据：直接 `async` 函数组件 + `await`; 客户端数据：SWR。
-- 在 Server Component 中使用 `next-intl/server` 的 `getLocale`、`getTranslations`。
 
 ### 运行时边界
 
-- **Server Components**：默认形态，可安全调用 `next-intl/server`、`@/utils/server`（内部依赖 `next/headers`）、数据库/文件系统。不要在其中引用仅客户端可用的库。
-- **Client Components**：必须以 `'use client'` 开头，禁止引入 `@/utils/server` 或任何使用 `next/headers`/`server-only` 的模块，以免打包失败。
-- **Server Actions**：在函数顶部声明 `'use server'`，仅作为服务端入口或表单 action 调用；内部可访问数据库或敏感 API，禁止在其中使用浏览器 API，也不要把 server action 传给客户端自定义 hooks。Server Actions 应放在 `@/actions` 下，按模块分文件夹管理，不聚合导出。
+- **Server Components**：默认形态，可以被定义为异步函数，可安全调用 `next-intl/server`、`@/utils/server`、数据库，通过 `getLocale`、`getTranslations` 等实现国际化。不要在其中引用仅客户端可用的库。
+- **Client Components**：必须以 `'use client'` 开头，禁止引入 `@/utils/server` 或任何使用 `next/headers`/`server-only` 的模块，以免打包失败，遵循常规 React 组件规范。只能在事件函数和 `useEffect` 中调用浏览器 API。通过 `useLocale`、`useTranslations` 等进行国际化。
+- **Server Actions**：在文件顶部声明 `'use server'`，其中定义的所有函数都是 Server Actions。这些函数仅运行在服务端，可以访问数据库，但可以被任何组件导入并自由使用，优先替代与服务端交互的常规网络请求。Server Actions 应放在 `@/actions` 下，按模块分文件夹管理，不聚合导出。
 
-### 动态组件（Dynamic Import）
+### 约定式路由
 
-- **必须提供 fallback**：使用 `next/dynamic` 进行代码分割时，必须提供 `fallback` 选项。生成代码时，统一使用 `DefaultLoadingFallback`（从 `@/components/DefaultLoadingFallback` 导入）作为 fallback。
-- **客户端 API 使用**：动态导入的组件内部可以使用客户端 API（如 `useEffect`、`useState`、浏览器 API 等），不受限制。动态组件默认会被标记为客户端组件，无需额外添加 `'use client'` 指令。
-- **使用示例**：
+Next.js 使用约定式路由，相应的文件应当遵循 Next.js 的导出规则。例如，`page.tsx` 需要默认导出组件，命名导出元数据生成函数、SSG 生成函数等，而 `route.ts` 需要导出 `GET`、`POST` 函数用于接收 HTTP 请求。
 
-  ```typescript
-  import dynamic from 'next/dynamic'
-  import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
+#### page.tsx
 
-  const DynamicComponent = dynamic(() => import('./Component'), {
-    fallback: <DefaultLoadingFallback />,
-  })
-  ```
+需要默认导出一个组件，优先导出服务端组件。
 
-### Server Actions 和 Route Handlers
+##### 如果导出服务端组件
 
-- **优先使用 Server Actions**：尽可能使用 Server Actions 替代 Route Handlers，Server Actions 提供更好的类型安全性和开发体验。
-- **Server Actions 组织**：Server Actions 放在 `@/actions` 下，内部按照所属的不同模块分多个文件夹（如 `@/actions/user`、`@/actions/product`），每个模块独立管理，不聚合导出。使用时直接从对应模块导入，例如 `import { createUser } from '@/actions/user'`。
-- **Route Handlers 使用场景**：仅在以下场景使用 Route Handlers（放在 `@/api` 下）：
-  - 需要处理 HTTP 请求/响应（如第三方 API 代理）
-  - 文件上传下载
-  - Webhook 接收
-  - 需要自定义 HTTP 方法、状态码、响应头等
-- Route Handlers 必须使用 `next/server` 导出的 `NextRequest` 和 `NextResponse` 类型，禁止使用原生的 `Request` 和 `Response`。
-- **数据验证**：Server Actions 和 Route Handlers 中的输入数据应使用 Zod 进行验证，参考"数据验证与类型推断"规范。
-
-### PageProps、LayoutProps 和 RouteContext
-
-Next.js 16 提供的全局类型工具，用于类型化页面组件、布局组件和路由处理程序的参数，在运行 `next dev`、`next build` 或 `next typegen` 时自动生成，无需手动导入。**注意**：这些类型仅在运行 `next dev` 时才会更新。
-
-#### PageProps<Route>
-
-用于类型化页面组件（`page.tsx`）的默认导出服务端组件。
-
-包含 `params`（动态路由参数），为 Promise，需要使用 `await` 访问。
-
-`PageProps` 自带了查询参数 `searchParams`，其类型是`Promise<Record<string, string | string[] | undefined>>`。
-
-**使用规范**：
-
-生成代码时， `params` 和 `searchParams` 不应从 `props` 解构得到，而要始终为其单独定义和赋值
+可以使用 `PageProps` 定义组件。它包含路径参数 `params` 和查询参数 `searchParams`，均为 Promise，需要使用 `await` 访问。`params` 和 `searchParams` 不应从 `props` 解构得到，而要始终为其单独定义和赋值。`props.searchParams` 应使用 `toURLSearchParams` 进行转换。
 
 ```ts
 import { toURLSearchParams } from '@/utils'
 
 const Page: FC<PageProps<'/example'>> = async (props) => {
   const params = await props.params
-  // 转化为可用的URLSearchParams类型
   const searchParams = toURLSearchParams(await props.searchParams)
   const query = searchParams.get('query')
   return null
@@ -194,19 +152,13 @@ const Page: FC<PageProps<'/example'>> = async (props) => {
 export default Page
 ```
 
-`generateMetadata` 中的 `PageProps` 参数也遵循这个规则
+#### layout.tsx
 
-#### LayoutProps<Route>
+需要默认导出一个组件，优先导出服务端组件。
 
-专供布局组件（`layout.tsx`）的默认导出使用，使用 `FC<LayoutProps<Route>>` 形式。`LayoutProps` 自带了以下内容：
+##### 如果导出服务端组件
 
-- **平行路由的插槽**：包括 `children` 以及所有平行路由插槽（如 `@modal`、`@sidebar` 等），无需手动添加 `PropsWithChildren`
-- **params**：动态路由参数，为 Promise，需要使用 `await` 访问
-- **注意**：Layout 组件无法接收 `searchParams`，如需查询参数应在页面组件中处理
-
-**使用规范**：
-
-生成代码时， `params` 不应从 `props` 解构得到，而要始终为其单独定义和赋值，而其他参数应当从 `props` 解构
+可以使用 `LayoutProps` 定义组件。它包含路径参数 `params`，但不包含查询参数。此外，`LayoutProps` 还包含平行路由插槽，`children` 已经在其中，不需要额外添加 `PropsWithChildren`。`params` 不应从 `props` 解构得到，而要始终为其单独定义和赋值，而其他参数应当从 `props` 解构。其他插槽排在 `children` 后面。
 
 ```ts
 import type { FC } from 'react'
@@ -222,13 +174,13 @@ const Layout: FC<LayoutProps<'/[locale]'>> = async (props) => {
 export default Layout
 ```
 
-#### RouteContext<Route>
+#### route.ts
 
-用于类型化路由处理程序（Route Handlers，`route.ts`）中的 `context` 参数，包含 `params`（动态路由参数），为 Promise，需要使用 `await` 访问。**不包含查询参数**，如需使用查询参数，应从 `NextRequest` 的 `nextUrl.searchParams` 获取。
+用于类型化 `route.ts` 中请求处理函数的 `context` 参数。使用 `RouteContext` 类型化 `context` 参数，它包含路径参数 `params`（动态），不包含查询参数。
 
-**使用规范**：
+如需使用查询参数，应从 `NextRequest` 的 `nextUrl.searchParams` 获取。
 
-生成代码时， `params` 不应从 `ctx` 解构得到，而要始终为其单独定义和赋值。
+生成代码时，`params` 不应从 `ctx` 解构得到，而要始终为其单独定义和赋值。
 
 总是单独定义 `searchParams` 并赋值。
 
@@ -242,11 +194,9 @@ export async function GET(req: NextRequest, ctx: RouteContext<'/api/example'>) {
 }
 ```
 
-#### 关于generateMetadata
+#### 关于 generateMetadata
 
-`layout.tsx` 和 `page.tsx` 都可以导出名为 `generateMetadata` 的函数用于动态生成元数据。
-
-**使用例**：
+在 `layout.tsx` 和 `page.tsx` 导出服务端组件时，也可以导出名为 `generateMetadata` 的函数用于动态生成元数据。
 
 ```ts
 import type { Metadata, ResolvingMetadata } from 'next'
@@ -260,32 +210,24 @@ export async function generateMetadata(
 }
 ```
 
-第二个参数是父级元数据，类型是 `Promise`。`generateMetadata` 生成的元数据不会和父级自动合并，如果有这种需求，取得 `parentMetadata` 后在其基础上更改即可。这个参数一般是不需要的，不自动生成这个参数，只在明确提及需要合并时再生成。
+第二个参数是父级元数据，类型是 `Promise`。`generateMetadata` 生成的元数据不会和父级自动合并，如果有这种需求，取得 `parentMetadata` 后在其基础上更改即可。该参数一般不需要，不自动生成，只在明确提及需要合并时再生成。
 
-此函数位于 `layout` 时，第一个参数是 `Pick<LayoutProps<xxx>, 'params'>` ,应当仿照 `Layout` 组件定义 `params` 并赋值。
+当此函数位于 `layout` 时，第一个参数是 `Pick<LayoutProps<xxx>, 'params'>`，应当仿照 `Layout` 组件定义 `params` 并赋值。
 
-位于 `page` 时，第一个参数是 `PageProps` ,同样应当仿照 `Page` 组件定义 `params` 和 `searchParams` 。
+当位于 `page` 时，第一个参数是 `PageProps`，同样应当仿照 `Page` 组件定义 `params` 和 `searchParams`。
 
-## 样式使用规范
+### Server Actions 和 Route Handlers
 
-- 优先 Tailwind 工具类；合并 `className` 时调用 `@/utils` 导出的 `cn`（`clsx + tailwind-merge` 包装）。
-- Tailwind 使用细则：
-  1. 简单样式（词数 ≤ 3，如 `m-0`、`max-h-full`）尽量使用 Tailwind；若组合过长，可按语义拆组（如布局类一组、边框类一组）并用 `cn` 拼接。
-  2. 凡是 CSS 属性值包含空格的样式（例如 `box-shadow`、`grid-column: span 1 / -1`）不使用 Tailwind，可放入 CSS Modules 以获得更好的提示。
-  3. 若组件只有极少数复杂样式（如单个 `grid-column: 1 / -1`），可用 `style` 内联；但 `grid-column: span 1 / -1`、`box-shadow` 等需写在 CSS 中。带空格的复杂样式原则上都放 CSS，只有可拆分为多个简单属性（如 padding 的 `pl-*`、`pr-*`）才可以继续使用 Tailwind。
-- 对于复杂视觉效果（自定义阴影、渐变背景、网格列、精细化修改 Antd 组件等），优先使用 CSS Modules 或内联 `style`，无需强行用 Tailwind。
-- 使用 `@/styles/index.ts` 导出的常用 className 常量（如 `AbsoluteCenter`）时，直接导入使用即可。
+- 优先使用 Server Actions 替代常规的网络请求。
+- **Server Actions 组织**：Server Actions 放在 `@/actions` 下，内部按照所属的不同模块分多个文件夹（如 `@/actions/user`、`@/actions/product`），每个模块独立管理，不聚合导出。使用时直接从对应模块导入，例如 `import { createUser } from '@/actions/user'`。
+- **Route Handlers 使用场景**：仅在以下场景使用 Route Handlers（放在 `@/api` 下）：
+  - 需要处理 HTTP 请求/响应（如第三方 API 代理）
+  - 文件上传下载
+  - Webhook 接收
+  - 需要自定义 HTTP 方法、状态码、响应头等
+- Route Handlers 必须使用 `next/server` 导出的 `NextRequest` 和 `NextResponse` 类型，禁止使用原生的 `Request` 和 `Response`。
+- **数据验证**：Server Actions 和 Route Handlers 中的输入数据应使用 Zod 进行验证。
 
-## 工具函数使用规范
+### Next.js 中的 Context
 
-- 使用 `@/utils/index` 中的工具函数时，按需导入即可，例如 `import { cn, sleep } from '@/utils'`。
-- 使用 `@/utils/server` 中的服务端工具时，必须在 Server Component 或 Server Action 中使用，禁止在 Client Component 中引用。
-- 使用 `@/lib` 中的封装时，通常只在 layout 级别或全局初始化时使用，正常业务页面/组件应调用 `@/utils` 或具体模块。
-- 使用 `@/actions` 中的 Server Actions 时，直接从对应模块导入，例如 `import { createUser } from '@/actions/user'`。不要从聚合导出中导入。
-- 使用 `@/api` 中的 Route Handlers 时，通过 `app/api` 路由访问，或直接调用对应的路由处理函数。
-
-## 类型使用规范
-
-- 使用 `Style` 类型时，在组件 Props 类型中通过交叉类型引入：`export type XXProps = Style & { ... }`。**注意**：`Style` 是全局类型（定义在 `@/types/index.d.ts`），**不需要导入**，直接使用即可。
-- 使用 `ActionType<ActionMap>` 时，定义 action 映射类型，然后通过 `ActionType` 转换为可辨识联合类型，在 reducer 等函数中使用 `action.type` 进行类型收窄。`ActionType` 也是全局类型，不需要导入。
-- 使用 `ValueController` 类型时，通过 `import type { ValueController } from 'value-controller'` 导入，根据组件需求配置 `strictValue`、`strictOnChange` 等参数。
+React Context 仅限在客户端组件（Client Components）中使用，服务端组件（Server Components）一般不使用 Context。如果服务端组件必须使用 Context，需要使用 Server Context（如 `next-intl` 提供的服务端 Context）。
