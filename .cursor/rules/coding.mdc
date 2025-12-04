@@ -37,7 +37,7 @@ alwaysApply: true
 ### 函数声明与导出
 
 - **函数类型声明**：如果函数有明确的类型，使用 `const fn: FN = xxx;` 形式；否则使用 `function` 声明。
-- **导出规范**：尽可能使用常规导出（命名导出），即 `export const` 或 `export function`。仅当 `page.tsx`、`layout.tsx`、`route.ts` 等 Next.js 特殊文件时使用默认导出。
+- **导出规范**：尽可能使用命名导出，即 `export const` 或 `export function`。仅当 `page.tsx`、`layout.tsx`、`route.ts` 等 Next.js 特殊文件时使用默认导出。
 - **默认导出**：使用默认导出时，`export default` 和值的定义必须分开，不能写成合并。
 
 ### 代码质量
