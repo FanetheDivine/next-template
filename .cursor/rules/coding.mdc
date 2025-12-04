@@ -138,6 +138,21 @@ alwaysApply: true
 - **Client Components**：必须以 `'use client'` 开头，禁止引入 `@/utils/server` 或任何使用 `next/headers`/`server-only` 的模块，以免打包失败。
 - **Server Actions**：在函数顶部声明 `'use server'`，仅作为服务端入口或表单 action 调用；内部可访问数据库或敏感 API，禁止在其中使用浏览器 API，也不要把 server action 传给客户端自定义 hooks。Server Actions 应放在 `@/actions` 下，按模块分文件夹管理，不聚合导出。
 
+### 动态组件（Dynamic Import）
+
+- **必须提供 fallback**：使用 `next/dynamic` 进行代码分割时，必须提供 `fallback` 选项。生成代码时，统一使用 `DefaultLoadingFallback`（从 `@/components/DefaultLoadingFallback` 导入）作为 fallback。
+- **客户端 API 使用**：动态导入的组件内部可以使用客户端 API（如 `useEffect`、`useState`、浏览器 API 等），不受限制。动态组件默认会被标记为客户端组件，无需额外添加 `'use client'` 指令。
+- **使用示例**：
+
+  ```typescript
+  import dynamic from 'next/dynamic'
+  import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
+
+  const DynamicComponent = dynamic(() => import('./Component'), {
+    fallback: <DefaultLoadingFallback />,
+  })
+  ```
+
 ### Server Actions 和 Route Handlers
 
 - **优先使用 Server Actions**：尽可能使用 Server Actions 替代 Route Handlers，Server Actions 提供更好的类型安全性和开发体验。
