@@ -44,6 +44,7 @@ alwaysApply: true
 - 生成/修改代码完成后运行执行 ESLint 检查，确保满足项目规范（尤其是 Hooks 依赖、Next.js 约束等）。
 - ESLint 强制 `@next/next/no-async-client-component`、`react-hooks/exhaustive-deps`。
 - 复杂逻辑添加注释；公共 API/组件 Props 提供 JSDoc 或类型注释。
+- **变量未使用警告**：代码生成时忽略变量未使用的 ESLint 警告，不要为这些变量添加 `_` 前缀。如果变量是函数签名必需的（如 `generateMetadata` 的参数、组件 Props 等），即使未使用也应保持原样，无需添加前缀或注释。
 
 ### 数据验证与类型推断
 
@@ -155,9 +156,11 @@ Next.js 16 提供的全局类型工具，用于类型化页面组件、布局组
 
 #### PageProps<Route>
 
-用于类型化页面组件（`page.tsx`）的默认导出服务端组件，以及 `generateMetadata` 函数的参数。包含 `params`（动态路由参数），为 Promise，需要使用 `await` 访问。
+用于类型化页面组件（`page.tsx`）的默认导出服务端组件。
 
-`PageProps` 自带了查询参数 `searchParams`，其类型是`Promise<Record<string, string | string[] | undefined>>`
+包含 `params`（动态路由参数），为 Promise，需要使用 `await` 访问。
+
+`PageProps` 自带了查询参数 `searchParams`，其类型是`Promise<Record<string, string | string[] | undefined>>`。
 
 **使用规范**：
 
@@ -173,6 +176,8 @@ const Page: FC<PageProps<'/example'>> = async (props) => {
   const query = searchParams.get('query')
   return null
 }
+
+export default Page
 ```
 
 `generateMetadata` 中的 `PageProps` 参数也遵循这个规则
@@ -222,6 +227,30 @@ export async function GET(req: NextRequest, ctx: RouteContext<'/api/example'>) {
   return NextResponse.json({ query })
 }
 ```
+
+#### 关于generateMetadata
+
+`layout.tsx` 和 `page.tsx` 都可以导出名为 `generateMetadata` 的函数用于动态生成元数据。
+
+**使用例**：
+
+```ts
+import type { Metadata, ResolvingMetadata } from 'next'
+
+export async function generateMetadata(
+  props: Pick<LayoutProps<'/[locale]'>, 'params'>,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const params = await props.params
+  // const parentMetadata = await parent
+}
+```
+
+第二个参数是父级元数据，类型是 `Promise`。`generateMetadata` 生成的元数据不会和父级自动合并，如果有这种需求，取得 `parentMetadata` 后在其基础上更改即可。这个参数一般是不需要的，不自动生成这个参数，只在明确提及需要合并时再生成。
+
+此函数位于 `layout` 时，第一个参数是 `Pick<LayoutProps<xxx>, 'params'>` ,应当仿照 `Layout` 组件定义 `params` 并赋值。
+
+位于 `page` 时，第一个参数是 `PageProps` ,同样应当仿照 `Page` 组件定义 `params` 和 `searchParams` 。
 
 ## 样式使用规范
 

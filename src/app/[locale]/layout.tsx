@@ -10,10 +10,11 @@ import { routing } from '@/i18n/routing'
 import AntdProvider from '@/lib/AntdProvider'
 import SWRProvider from '@/lib/SWRProvider'
 
-export async function generateMetadata(props: PageProps<'/[locale]'>): Promise<Metadata> {
-  // 为了适应打包为静态html的情况
-  const { params } = props
-  const { locale } = await params
+export async function generateMetadata(
+  props: Pick<LayoutProps<'/[locale]'>, 'params'>,
+): Promise<Metadata> {
+  const params = await props.params
+  const { locale } = params
   if (!hasLocale(routing.locales, locale)) {
     return {}
   }
