@@ -7,7 +7,7 @@ import { AntdRegistry } from '@ant-design/nextjs-registry'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import { match } from 'ts-pattern'
-import { ClientAntdProvider } from './ClientAntdProvider'
+import { ClientStyleProvider } from './ClientStyleProvider'
 
 /** antd 首屏样式 样式兼容 本地化 主题等 */
 export const AntdProvider: FC<PropsWithChildren & { locale: Locale }> = (props) => {
@@ -23,9 +23,9 @@ export const AntdProvider: FC<PropsWithChildren & { locale: Locale }> = (props) 
 
   return (
     <AntdRegistry>
-      <ClientAntdProvider>
+      <ClientStyleProvider layer>
         <ConfigProvider locale={antdLocale}>{props.children}</ConfigProvider>
-      </ClientAntdProvider>
+      </ClientStyleProvider>
     </AntdRegistry>
   )
 }
