@@ -48,11 +48,11 @@ const RootLayout: FC<LayoutProps<'/[locale]'>> = async (props) => {
     <html lang={locale}>
       <body>
         <NextIntlClientProvider>
-          <AntdProvider locale={locale}>
-            <SWRProvider>
+          <SWRProvider>
+            <AntdProvider locale={locale}>
               <App className='app'>{children}</App>
-            </SWRProvider>
-          </AntdProvider>
+            </AntdProvider>
+          </SWRProvider>
         </NextIntlClientProvider>
       </body>
     </html>
