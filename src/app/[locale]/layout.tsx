@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { hasLocale } from 'next-intl'
 import { NextIntlClientProvider } from 'next-intl'
-import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server'
+import { getLocale, getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import type { FC } from 'react'
 import { App } from 'antd'
@@ -43,16 +43,16 @@ const RootLayout: FC<LayoutProps<'/[locale]'>> = async (props) => {
   if (process.env.EXPORT === 'true') {
     setRequestLocale(locale)
   }
-
+  const messages = await getMessages({ locale })
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider>
-          <AntdProvider locale={locale}>
-            <SWRProvider>
+        <NextIntlClientProvider messages={{ common: messages.common }}>
+          <SWRProvider>
+            <AntdProvider locale={locale}>
               <App className='app'>{children}</App>
-            </SWRProvider>
-          </AntdProvider>
+            </AntdProvider>
+          </SWRProvider>
         </NextIntlClientProvider>
       </body>
     </html>

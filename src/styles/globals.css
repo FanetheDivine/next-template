@@ -21,7 +21,7 @@
 
   html,
   body,
-  .app {
+  body > .app {
     @apply relative m-0 h-full w-full p-0;
   }
 
@@ -30,7 +30,7 @@
   }
 
   body,
-  .app {
+  body > .app {
     @apply overflow-hidden;
   }
 }
