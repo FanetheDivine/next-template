@@ -1,4 +1,4 @@
-import { ComponentType, FC, forwardRef, ReactNode } from 'react'
+import { ComponentType, FC, ReactNode } from 'react'
 import {
   ErrorBoundary,
   ErrorBoundaryPropsWithComponent,
@@ -37,13 +37,13 @@ export function withErrorBoundary<T extends ComponentType<any>>(
     return <ErrorBoundary {...errorBoundaryProps}>{children}</ErrorBoundary>
   } else {
     const Comp: any = arg
-    const CompWithErrorBoundary = forwardRef(function CompWithErrorBoundary(props, ref) {
+    const CompWithErrorBoundary: FC<any> = (props) => {
       return (
         <ErrorBoundary {...errorBoundaryProps}>
-          <Comp {...props} ref={ref} />
+          <Comp {...props} />
         </ErrorBoundary>
       )
-    })
+    }
     return CompWithErrorBoundary as unknown as T
   }
 }

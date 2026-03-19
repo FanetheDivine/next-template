@@ -1,4 +1,4 @@
-import { ComponentType, forwardRef, ReactNode, Suspense } from 'react'
+import { ComponentType, FC, ReactNode, Suspense } from 'react'
 import { DefaultLoadingFallback } from '@/components/DefaultLoadingFallback'
 import { isReactNode } from '../isReactNode'
 
@@ -16,13 +16,13 @@ export function withSuspense<T extends ComponentType<any>>(
     return <Suspense fallback={fallback}>{children}</Suspense>
   } else {
     const Comp: any = arg
-    const CompWithSuspense = forwardRef(function CompWithSuspense(props, ref) {
+    const CompWithSuspense: FC<any> = (props) => {
       return (
         <Suspense fallback={fallback}>
-          <Comp {...props} ref={ref} />
+          <Comp {...props} />
         </Suspense>
       )
-    })
+    }
     return CompWithSuspense as unknown as T
   }
 }
