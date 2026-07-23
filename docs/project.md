@@ -1,62 +1,41 @@
----
-alwaysApply: true
----
+# 项目结构参考
 
-# 项目总览
+## 常用脚本
 
-- **框架**：Next.js 16（App Router），TypeScript 严格模式。
-- **UI**：React 19 + Ant Design 6，Tailwind CSS 4 做样式，`@/styles` 放共享样式。
-- **国际化**：基于 next-intl，页面位于 `src/app/[locale]`，根下有 `app/page.tsx` 负责静态导出时的重定向。
-- **状态与数据**：Zustand 管全局状态，SWR 处理客户端数据，Axios 做 HTTP，Zod 做数据验证和类型推断。
-- **工具链**：pnpm、ESLint 9（含 `@next/next/no-async-client-component`）、Prettier（含 sort-imports、tailwind 插件）、Tailwind 4 config (`tailwind.config.ts`)。
-- **路径别名**：`@/* -> src/*`，请优先使用别名。
+| 命令 | 说明 |
+| --- | --- |
+| `pnpm dev` | 开发调试（`next dev`） |
+| `pnpm build` | 正常构建 |
+| `pnpm build:export` | `EXPORT=true` 静态导出 |
+| `pnpm analyze` | `ANALYZE=true` 开启 bundle 分析 |
+| `pnpm analyze:export` | `ANALYZE=true EXPORT=true` 静态导出 + bundle 分析 |
+| `pnpm lint` | ESLint 检查 `src/` |
+| `pnpm prettier` | `prettier --write src/` |
 
-# 目录速览
+> `next.config.ts` 会串联 next-intl 与 bundle analyzer，可通过环境变量控制导出/分析。
 
-```
-src/
-├─ actions/      # Server Actions
-├─ api/          # Route Handlers
-├─ app/          # App Router（含 [locale]）
-├─ components/   # 通用组件
-├─ hooks/        # 自定义 hooks
-├─ i18n/         # next-intl 配置与导航封装
-├─ lib/          # 第三方封装
-├─ styles/       # 样式与常量
-├─ types/        # 类型声明
-└─ utils/        # 工具函数
-```
+## 全局类型
 
-# 常用脚本
-
-| 命令                 | 说明                            |
-| -------------------- | ------------------------------- |
-| `pnpm dev`           | 开发调试（`next dev --turbo`）  |
-| `pnpm build`         | 正常构建                        |
-| `pnpm build:export`  | `EXPORT=true` 静态导出          |
-| `pnpm build:analyze` | `ANALYZE=true` 开启 bundle 分析 |
-| `pnpm prettier`      | `prettier --write src/`         |
-
-> `next.config.ts` 会串联 next-intl 与 bundle analyzer，可通过环境变量控制导出/分析/类型检查。
-
-# 全局类型
-
-## @/types/index.d.ts
+### @/types/index.d.ts
 
 定义全局辅助类型，包括：
 
 - `Style`：样式相关的 props（如 `className`、`style` 等），用于组件 Props 类型定义。
 - `isFunction`：判断是否为函数的类型守卫。
 - `ActionType<ActionMap>`：将键值对映射转换为可辨识联合类型（discriminated union），适用于**一个函数接受不同类型的参数并执行多种响应操作的场景**。
-  - 转换规则：- 将 `{ a: number; b: undefined; c?: number }` 转换为 `{ type: 'a'; value: number } | { type: 'b'; value?: undefined } | { type: 'c'; value?: number }` - 必填且非 `undefined` 的键：生成 `{ type: K; value: ActionMap[K] }` - 值为 `undefined` 的键：生成 `{ type: K; value?: undefined }`（`value` 可选但类型为 `undefined`，实际使用时可忽略）- 可选键（`c?: number`）：生成 `{ type: K; value?: ActionMap[K] }` - 函数可通过 `action.type` 进行类型收窄，TypeScript 会自动推断对应的 `value` 类型
+  - 转换规则：将 `{ a: number; b: undefined; c?: number }` 转换为 `{ type: 'a'; value: number } | { type: 'b'; value?: undefined } | { type: 'c'; value?: number }`
+  - 必填且非 `undefined` 的键：生成 `{ type: K; value: ActionMap[K] }`
+  - 值为 `undefined` 的键：生成 `{ type: K; value?: undefined }`（`value` 可选但类型为 `undefined`，实际使用时可忽略）
+  - 可选键（`c?: number`）：生成 `{ type: K; value?: ActionMap[K] }`
+  - 函数可通过 `action.type` 进行类型收窄，TypeScript 会自动推断对应的 `value` 类型
 
-**注意**：以上类型都是全局存在的，直接使用即可，不应该也不能从`@/types`导入。
+**注意**：以上类型都是全局存在的，直接使用即可，不应该也不能从 `@/types` 导入。
 
-## @/types/css.d.ts
+### @/types/css.d.ts
 
 处理样式模块导入的类型声明。
 
-## @/types/ValueController/index.ts
+### @/types/ValueController/index.ts
 
 声明同名自定义模块 `value-controller`：
 
@@ -66,9 +45,9 @@ src/
 
 新增类型请集中到 `@/types`。
 
-# 工具函数与库
+## 工具函数与库
 
-## @/utils/index
+### @/utils/index
 
 汇总可在服务端/客户端公用的 helper：
 
@@ -77,26 +56,27 @@ src/
 - `withSuspense`：为任意组件或 ReactNode 添加 Suspense 边界。
 - `withErrorBoundary`：基于 `react-error-boundary`，为组件或 ReactNode 增加错误边界。
 - `loadFile`：在浏览器中以函数形式加载文件。
-- `Rxjs/*`：导出 RxJS 相关辅助。
+- `toURLSearchParams`：将查询参数对象转换为 `URLSearchParams`。
+- `Rxjs/*`：导出 RxJS 相关辅助（`ajaxProgress`、`online`）。
 - `isReactNode`：判断某个值是否为有效的 ReactNode。
 
-## @/utils/server
+### @/utils/server
 
 专用于服务端（依赖 `next/headers`、`react` 的 `cache` 等），例如 `isMobile`，绝不能在 `'use client'` 组件中引用。
 
-## @/lib
+### @/lib
 
-存放全局注入、一次性初始化或 layout 级别使用的封装（如主题、注册器、Provider 等）。正常业务页面/组件应调用 `@/utils` 或具体模块，避免滥用 `@/lib`。
+存放全局注入、一次性初始化或 layout 级别使用的封装（如 `AntdProvider`、`SWRProvider`）。正常业务页面/组件应调用 `@/utils` 或具体模块，避免滥用 `@/lib`。
 
-## @/actions
+### @/actions
 
 存放 Server Actions，内部按照所属的不同模块分多个文件夹，不聚合导出。每个模块的 actions 独立管理，使用时直接从对应模块导入。
 
-## @/api
+### @/api
 
 存放 Route Handlers（`route.ts` 文件）。仅在需要处理 HTTP 请求/响应、文件上传下载、Webhook 等场景时使用 Route Handlers。优先考虑使用 Server Actions 替代 Route Handlers。Route Handlers 中通过 Zod 进行请求参数和响应数据的验证与类型校验。
 
-## Zod
+### Zod
 
 项目使用 Zod 进行数据验证和类型推断：
 
@@ -108,7 +88,7 @@ src/
   - 表单数据验证
   - API 响应数据校验
 
-# Hooks
+## Hooks
 
 所有自定义 hooks 位于 `@/hooks` 并在 `index.tsx` 聚合导出：
 
@@ -116,13 +96,11 @@ src/
 - `useSemiControlledValue`：辅助实现受控/非受控双模态组件，与 `ValueController` 类型配套。
 - `useComposition`：处理输入法组合事件（CompositionEvent），确保输入法合成期间不触发 onChange。如需防抖，只需将传入的 `onChange` 包装为防抖函数（如使用 `ahooks` 的 `useDebounceFn`）即可，hook 会自动处理合成与防抖的协调。
 
-# 样式系统
+## 样式系统
 
 - `@/styles/globals.css` 汇总 Tailwind、Ant Design reset 及项目自定义全局样式。
 - `@/styles/index.ts` 导出如 `AbsoluteCenter` 这类常用 className 常量，可在组件中引用。
 - 项目使用 Tailwind CSS 4 作为主要样式方案，配合 CSS Modules 处理复杂样式。
 - 不使用 Sass/Less；全部样式以原生 CSS、CSS Modules 或 Tailwind 为主。
 
-# 参考
-
-- 如需补充规范，允许联网查阅 Next.js、next-intl、Ant Design 等官方文档或权威资料，确保内容与最新版本保持一致。
+详细的样式使用规范见 [docs/coding.md](coding.md#样式规范)。
